@@ -1,0 +1,17 @@
+{
+  "date": "2024-01-01",
+  "totalConsumption": 8,
+  "totalProduction": 10,
+  "averagePrice": 3,
+  "hourWithMostConsumptionVsProduction": "2024-01-01T01:00:00",
+  "hourlyPrices": [
+    {
+      "startTime": "2024-01-01T00:00:00",
+      "hourlyPrice": 4
+    },
+    {
+      "startTime": "2024-01-01T01:00:00",
+      "hourlyPrice": 2
+    }
+  ]
+}
