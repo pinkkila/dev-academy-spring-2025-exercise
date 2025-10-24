@@ -23,16 +23,13 @@ public class ElectricityDataDailyService {
             Pageable pageable
     ) {
         String baseSql = """
-                    SELECT *
+                    SELECT date, total_production, total_consumption, average_price, consecutive_negative_hours
                     FROM electricity_data_daily
                 """;
         
         var whereClauseAndParams = buildWhereClauseAndParams(filter);
-        
         String orderByClause = buildOrderByClause(pageable);
-        
         String limitOffsetClause = " LIMIT :limit OFFSET :offset";
-        
         String sql = baseSql + whereClauseAndParams.whereClause + orderByClause + limitOffsetClause;
         
         var statement = jdbcClient.sql(sql);
@@ -59,55 +56,55 @@ public class ElectricityDataDailyService {
     }
     
     private WhereClauseAndParams buildWhereClauseAndParams(ElectricityDataDailyRequestFilter filter) {
-        StringJoiner where = new StringJoiner(" AND ");
+        StringJoiner whereConditions = new StringJoiner(" AND ");
         Map<String, Object> params = new LinkedHashMap<>();
         
         if (filter.startDate() != null) {
-            where.add("date >= :startDate");
+            whereConditions.add("date >= :startDate");
             params.put("startDate", filter.startDate());
         }
         if (filter.endDate() != null) {
-            where.add("date <= :endDate");
+            whereConditions.add("date <= :endDate");
             params.put("endDate", filter.endDate());
         }
         
         if (filter.minTotalConsumption() != null) {
-            where.add("total_consumption >= :minTotalConsumption");
+            whereConditions.add("total_consumption >= :minTotalConsumption");
             params.put("minTotalConsumption", filter.minTotalConsumption());
         }
         if (filter.maxTotalConsumption() != null) {
-            where.add("total_consumption <= :maxTotalConsumption");
+            whereConditions.add("total_consumption <= :maxTotalConsumption");
             params.put("maxTotalConsumption", filter.maxTotalConsumption());
         }
         
         if (filter.minTotalProduction() != null) {
-            where.add("total_production >= :minTotalProduction");
+            whereConditions.add("total_production >= :minTotalProduction");
             params.put("minTotalProduction", filter.minTotalProduction());
         }
         if (filter.maxTotalProduction() != null) {
-            where.add("total_production <= :maxTotalProduction");
+            whereConditions.add("total_production <= :maxTotalProduction");
             params.put("maxTotalProduction", filter.maxTotalProduction());
         }
         
         if (filter.minAveragePrice() != null) {
-            where.add("average_price >= :minAveragePrice");
+            whereConditions.add("average_price >= :minAveragePrice");
             params.put("minAveragePrice", filter.minAveragePrice());
         }
         if (filter.maxAveragePrice() != null) {
-            where.add("average_price <= :maxAveragePrice");
+            whereConditions.add("average_price <= :maxAveragePrice");
             params.put("maxAveragePrice", filter.maxAveragePrice());
         }
         
         if (filter.minConsecutiveNegativeHours() != null) {
-            where.add("consecutive_negative_hours >= :minConsecutiveNegativeHours");
+            whereConditions.add("consecutive_negative_hours >= :minConsecutiveNegativeHours");
             params.put("minConsecutiveNegativeHours", filter.minConsecutiveNegativeHours());
         }
         if (filter.maxConsecutiveNegativeHours() != null) {
-            where.add("consecutive_negative_hours <= :maxConsecutiveNegativeHours");
+            whereConditions.add("consecutive_negative_hours <= :maxConsecutiveNegativeHours");
             params.put("maxConsecutiveNegativeHours", filter.maxConsecutiveNegativeHours());
         }
         
-        String whereClause = params.isEmpty() ? "" : " WHERE " + where;
+        String whereClause = params.isEmpty() ? "" : " WHERE " + whereConditions;
         return new WhereClauseAndParams(whereClause, params);
     }
     
@@ -129,6 +126,7 @@ public class ElectricityDataDailyService {
         for (var order : sort) {
             String requestedProperty = order.getProperty();
             String column = sortPropertiesToColumn.get(requestedProperty);
+            
             if (column == null) {
                 throw new BadRequestException("Unsupported sort property: '" + requestedProperty + "'. Allowed properties: " + sortPropertiesToColumn.keySet());
             }

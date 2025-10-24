@@ -16,8 +16,8 @@ public class ElectricityDataController {
     private final ElectricityDataService electricityDataService;
     
     @GetMapping("/day/{date}")
-    public ResponseEntity<ElectricityDataSingeleDayDto> getElectricityDataPage(@PathVariable LocalDate date) {
-        return ResponseEntity.ok(this.electricityDataService.getSingleDayStatistics(date));
+    public ResponseEntity<ElectricityDataSingeleDayDto> getElectricityDataSingleDayStatistics(@PathVariable LocalDate date) {
+        return ResponseEntity.ok(this.electricityDataService.getElectricityDataSingleDayStatistics(date));
     }
 
 }

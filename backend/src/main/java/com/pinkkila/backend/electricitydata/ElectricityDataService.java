@@ -14,7 +14,7 @@ import java.util.Objects;
 public class ElectricityDataService {
     private final ElectricityDataRepository electricityDataRepository;
     
-    public ElectricityDataSingeleDayDto getSingleDayStatistics(LocalDate date) {
+    public ElectricityDataSingeleDayDto getElectricityDataSingleDayStatistics(LocalDate date) {
         var singleDayData = electricityDataRepository.findAllByDate(date);
         
         var totalConsumption = singleDayData.stream()
