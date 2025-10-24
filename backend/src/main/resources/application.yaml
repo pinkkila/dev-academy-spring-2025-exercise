@@ -1,3 +1,27 @@
 spring:
   application:
     name: backend
+
+  data:
+    web:
+      pageable:
+        serialization-mode: via_dto
+
+  datasource:
+    username: academy
+    password: academy
+    url: "jdbc:postgresql://127.0.0.1:5432/electricity"
+
+  sql:
+    init:
+      mode: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+logging:
+  level:
+    sql: debug
