@@ -22,6 +22,10 @@ management:
       exposure:
         include: health
 
+app:
+  frontend-uri: http://localhost:5173
+#  base-uri: http://localhost:5173
+
 logging:
   level:
     sql: debug
