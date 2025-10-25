@@ -3,8 +3,6 @@ import Container from "@/components/Container.tsx";
 import DailyStatisticsTable from "@/components/DailyStatisticsTable.tsx";
 
 export default function App() {
-
-
   return (
     <Container>
       <ThemeModeToggle />
@@ -18,7 +16,7 @@ export default function App() {
           </div>
 
           <div className="lg:w-2/3">
-            <DailyStatisticsTable/>
+            <DailyStatisticsTable />
           </div>
         </div>
       </section>
