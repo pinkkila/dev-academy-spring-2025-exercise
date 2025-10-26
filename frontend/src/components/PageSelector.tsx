@@ -8,14 +8,13 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import type { TPage } from "@/lib/types.ts";
+import { useDSParams } from "@/lib/hooks.ts";
 
 export default function PageSelector({page}: {page: TPage}) {
+  const { setPageNumber, setPageSize } = useDSParams()
+
   return (
     <div className="flex items-center justify-between px-4">
-      {/*<div className="text-muted-foreground hidden flex-1 text-sm lg:flex">*/}
-      {/*  {table.getFilteredSelectedRowModel().rows.length} of{" "}*/}
-      {/*  {table.getFilteredRowModel().rows.length} row(s) selected.*/}
-      {/*</div>*/}
       <div className="flex w-full items-center gap-8 lg:w-fit">
         <div className="hidden items-center gap-2 lg:flex">
           <Label htmlFor="rows-per-page" className="text-sm font-medium">
@@ -23,9 +22,9 @@ export default function PageSelector({page}: {page: TPage}) {
           </Label>
           <Select
             value={`${page.size}`}
-            // onValueChange={(value) => {
-            //   table.setPageSize(Number(value))
-            // }}
+            onValueChange={(value) => {
+              setPageSize(Number(value))
+            }}
           >
             <SelectTrigger size="sm" className="w-20" id="rows-per-page">
               <SelectValue
@@ -49,8 +48,8 @@ export default function PageSelector({page}: {page: TPage}) {
           <Button
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
-            // onClick={() => table.setPageIndex(0)}
-            // disabled={!table.getCanPreviousPage()}
+            onClick={() => setPageNumber(0)}
+            disabled={page.number === 0}
           >
             <span className="sr-only">Go to first page</span>
             <ChevronsLeft />
@@ -59,8 +58,8 @@ export default function PageSelector({page}: {page: TPage}) {
             variant="outline"
             className="size-8"
             size="icon"
-            // onClick={() => table.previousPage()}
-            // disabled={!table.getCanPreviousPage()}
+            onClick={() => setPageNumber(page.number - 1)}
+            disabled={page.number === 0}
           >
             <span className="sr-only">Go to previous page</span>
             <ChevronLeft />
@@ -69,8 +68,8 @@ export default function PageSelector({page}: {page: TPage}) {
             variant="outline"
             className="size-8"
             size="icon"
-            // onClick={() => table.nextPage()}
-            // disabled={!table.getCanNextPage()}
+            onClick={() => setPageNumber(page.number + 1)}
+            disabled={page.number === page.totalPages -1}
           >
             <span className="sr-only">Go to next page</span>
             <ChevronRight />
@@ -79,8 +78,8 @@ export default function PageSelector({page}: {page: TPage}) {
             variant="outline"
             className="hidden size-8 lg:flex"
             size="icon"
-            // onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            // disabled={!table.getCanNextPage()}
+            onClick={() => setPageNumber(page.totalPages - 1)}
+            disabled={page.number === page.totalPages - 1}
           >
             <span className="sr-only">Go to last page</span>
             <ChevronsRight />

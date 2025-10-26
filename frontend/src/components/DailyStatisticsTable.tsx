@@ -9,17 +9,17 @@ import {
 import { useEffect, useState } from "react";
 import type { TDailyData, TDailyDataReponse, TPage } from "@/lib/types.ts";
 import PageSelector from "@/components/PageSelector.tsx";
+import { useDSParams } from "@/lib/hooks.ts";
 
 
 export default function DailyStatisticsTable() {
   const [dailyStatistics, setDailyStatistics] = useState<TDailyData[]>([]);
   const [page, setPage] = useState<TPage | null>(null);
+  const { searchParams } = useDSParams();
 
   useEffect(() => {
     const getData = async () => {
-      const response = await fetch(
-        "http://localhost:8080/api/electricity?startDate=2023-12-01&endDate=2023-12-31&page=0&size=10",
-      );
+      const response = await fetch(`http://localhost:8080/api/electricity?${searchParams}`);
       if (!response.ok)
         throw new Error("Error in fetch: " + response.statusText);
       const data: TDailyDataReponse = await response.json();
@@ -27,7 +27,7 @@ export default function DailyStatisticsTable() {
       setPage(data.page);
     };
     getData();
-  }, []);
+  }, [searchParams]);
 
   return (
 
