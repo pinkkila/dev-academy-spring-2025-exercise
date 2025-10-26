@@ -12,23 +12,31 @@ import PageSelector from "@/components/PageSelector.tsx";
 import { useDSParams } from "@/lib/hooks.ts";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
+import * as React from "react";
 
 type TColumn<T> = {
   key: keyof T;
   label: string;
+  render?: (value: T[keyof T]) => React.ReactNode;
 };
 
-export default function DailyStatisticsTable() {
-  const [dailyStatistics, setDailyStatistics] = useState<TDailyData[]>([]);
-  const [page, setPage] = useState<TPage | null>(null);
-  const { searchParams, sortBy, setSortBy } = useDSParams();
+  const finnishDateFormatter = new Intl.DateTimeFormat("fi-FI");
   const columns: TColumn<TDailyData>[] = [
-    { key: "date", label: "Date" },
+    {
+      key: "date",
+      label: "Date",
+      render: (value) => finnishDateFormatter.format(new Date(value)),
+    },
     { key: "totalConsumption", label: "Total Consumption" },
     { key: "totalProduction", label: "Total Production" },
     { key: "averagePrice", label: "Average Price" },
     { key: "consecutiveNegativeHours", label: "Negative Period" },
   ] as const;
+
+export default function DailyStatisticsTable() {
+  const [dailyStatistics, setDailyStatistics] = useState<TDailyData[]>([]);
+  const [page, setPage] = useState<TPage | null>(null);
+  const { searchParams, sortBy, setSortBy } = useDSParams();
 
   useEffect(() => {
     const getData = async () => {
@@ -76,11 +84,14 @@ export default function DailyStatisticsTable() {
                 key={dailyData.date}
                 onClick={() => console.log(dailyData.date)}
               >
-                {columns.map((col) => (
-                  <TableCell key={col.key} className="text-center">
-                    {dailyData[col.key]}
-                  </TableCell>
-                ))}
+                {columns.map((col) => {
+                  const value = dailyData[col.key];
+                  return (
+                    <TableCell key={col.key} className="text-center">
+                      {col.render ? col.render(value) : value}
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))}
           </TableBody>
