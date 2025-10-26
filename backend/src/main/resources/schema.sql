@@ -39,7 +39,7 @@ WITH add_indicator AS (SELECT *, CASE WHEN hourly_price < 0 THEN 0 ELSE 1 END AS
 SELECT date,
        SUM(production_amount)                     as total_production,
        SUM(consumption_amount)                    as total_consumption,
-       AVG(hourly_price)                          as average_price,
+       AVG(hourly_price)::NUMERIC(6,2)            as average_price,
        COALESCE(MAX(negative_hours_seq_count), 0) as consecutive_negative_hours
 FROM count_negative_seqs
 GROUP BY date;

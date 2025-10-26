@@ -26,8 +26,8 @@ class ElectricityDataServiceTest {
     @Test
     void getElectricityDataSingleDayStatisticsFromService() {
         var testData = List.of(
-                new ElectricityData(1L, LocalDate.of(2024, 1, 1), LocalDateTime.of(2024, 1, 1, 0, 0, 0), BigDecimal.valueOf(10), BigDecimal.valueOf(8), BigDecimal.valueOf(5)),
-                new ElectricityData(2L, LocalDate.of(2024, 1, 1), LocalDateTime.of(2024, 1, 1, 1, 0, 0), BigDecimal.valueOf(8), BigDecimal.valueOf(5), BigDecimal.valueOf(3))
+                new ElectricityData(1L, LocalDate.of(2024, 1, 1), LocalDateTime.of(2024, 1, 1, 0, 0, 0), BigDecimal.valueOf(10), BigDecimal.valueOf(8), BigDecimal.valueOf(8.24)),
+                new ElectricityData(2L, LocalDate.of(2024, 1, 1), LocalDateTime.of(2024, 1, 1, 1, 0, 0), BigDecimal.valueOf(8), BigDecimal.valueOf(5), BigDecimal.valueOf(5.99))
         );
         
         when(electricityDataRepository.findAllByDate(LocalDate.of(2024, 1, 1))).thenReturn(testData);
@@ -36,7 +36,7 @@ class ElectricityDataServiceTest {
         assertThat(data.date().isEqual(LocalDate.of(2024, 1, 1)));
         assertThat(data.totalConsumption()).isEqualTo(BigDecimal.valueOf(13));
         assertThat(data.totalProduction()).isEqualTo(BigDecimal.valueOf(18));
-        assertThat(data.averagePrice()).isEqualTo(BigDecimal.valueOf(4));
+        assertThat(data.averagePrice()).isEqualTo(BigDecimal.valueOf(7.12));
         assertThat(data.hourWithMostConsumptionVsProduction()).isEqualTo(LocalDateTime.of(2024, 1, 1, 0, 0, 0));
         
         var hourlyPrices = data.hourlyPrices();
@@ -44,10 +44,10 @@ class ElectricityDataServiceTest {
         
         var first = hourlyPrices.getFirst();
         assertThat(first.startTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 0, 0));
-        assertThat(first.hourlyPrice()).isEqualTo(BigDecimal.valueOf(5));
+        assertThat(first.hourlyPrice()).isEqualTo(BigDecimal.valueOf(8.24));
         
         var second = hourlyPrices.get(1);
         assertThat(second.startTime()).isEqualTo(LocalDateTime.of(2024, 1, 1, 1, 0));
-        assertThat(second.hourlyPrice()).isEqualTo(BigDecimal.valueOf(3));
+        assertThat(second.hourlyPrice()).isEqualTo(BigDecimal.valueOf(5.99));
     }
 }

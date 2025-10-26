@@ -31,7 +31,7 @@ public class ElectricityDataService {
                 .map(ElectricityData::getHourlyPrice)
                 .filter(Objects::nonNull)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .divide(BigDecimal.valueOf(singleDayData.size()), RoundingMode.HALF_UP);
+                .divide(BigDecimal.valueOf(singleDayData.size()), 2, RoundingMode.HALF_UP);
         
         var hourWithMostConsumptionVsProduction = singleDayData.stream()
                 .filter(e -> e.getProductionAmount() != null && e.getConsumptionAmount() != null)

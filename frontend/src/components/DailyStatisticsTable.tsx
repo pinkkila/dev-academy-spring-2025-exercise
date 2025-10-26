@@ -7,10 +7,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import type { TDailyData } from "@/lib/types.ts";
+import type { TDailyData, TDailyDataReponse, TPage } from "@/lib/types.ts";
+import PageSelector from "@/components/PageSelector.tsx";
+
 
 export default function DailyStatisticsTable() {
   const [dailyStatistics, setDailyStatistics] = useState<TDailyData[]>([]);
+  const [page, setPage] = useState<TPage | null>(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -19,34 +22,54 @@ export default function DailyStatisticsTable() {
       );
       if (!response.ok)
         throw new Error("Error in fetch: " + response.statusText);
-      const data = await response.json();
+      const data: TDailyDataReponse = await response.json();
       setDailyStatistics(data.content);
+      setPage(data.page);
     };
     getData();
   }, []);
 
   return (
-    <Table>
-      <TableHeader className="bg-muted">
-        <TableRow className="">
-          <TableHead className="">Date</TableHead>
-          <TableHead>Total Consumption</TableHead>
-          <TableHead>Total Production</TableHead>
-          <TableHead>Average Price</TableHead>
-          <TableHead>Longest negative price period</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-          {dailyStatistics.map((dailyData: TDailyData) => (
-        <TableRow key={dailyData.date} className="text-muted-foreground">
-              <TableCell>{dailyData.date}</TableCell>
-              <TableCell>{dailyData.totalConsumption}</TableCell>
-              <TableCell>{dailyData.totalProduction}</TableCell>
-              <TableCell>{dailyData.averagePrice}</TableCell>
-              <TableCell>{dailyData.consecutiveNegativeHours}</TableCell>
-        </TableRow>
-          ))}
-      </TableBody>
-    </Table>
+
+    <>
+      <div className="overflow-hidden rounded-xl border">
+        <Table>
+          <TableHeader className="bg-muted">
+            <TableRow className="">
+              <TableHead className="text-center">Date </TableHead>
+              <TableHead className="text-center">Total Consumption</TableHead>
+              <TableHead className="text-center">Total Production</TableHead>
+              <TableHead className="text-center">Average Price</TableHead>
+              <TableHead className="text-center">Negative Period</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {dailyStatistics.map((dailyData: TDailyData) => (
+              <TableRow
+                key={dailyData.date}
+                onClick={() => console.log(dailyData.date)}
+              >
+                <TableCell className="text-center">{dailyData.date}</TableCell>
+                <TableCell className="text-center">
+                  {dailyData.totalConsumption}
+                </TableCell>
+                <TableCell className="text-center">
+                  {dailyData.totalProduction}
+                </TableCell>
+                <TableCell className="text-center">
+                  {dailyData.averagePrice}
+                </TableCell>
+                <TableCell className="text-center">
+                  {dailyData.consecutiveNegativeHours}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+      { page &&
+      <PageSelector page={page} />
+        }
+    </>
   );
 }
