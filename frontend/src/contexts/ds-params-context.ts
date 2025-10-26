@@ -1,6 +1,7 @@
 import { createContext } from "react";
 
 type DSParamsContext = {
+  setDebouncedPriceRange: (debouncedPriceRange: [number, number]) => void;
   setPageNumber: (pageNumber: number) => void;
   setPageSize: (pageSize: number) => void;
   sortBy: string;

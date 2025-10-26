@@ -20,18 +20,32 @@ type TColumn<T> = {
   render?: (value: T[keyof T]) => React.ReactNode;
 };
 
-  const finnishDateFormatter = new Intl.DateTimeFormat("fi-FI");
-  const columns: TColumn<TDailyData>[] = [
-    {
-      key: "date",
-      label: "Date",
-      render: (value) => finnishDateFormatter.format(new Date(value)),
+const finnishDateFormatter = new Intl.DateTimeFormat("fi-FI");
+const columns: TColumn<TDailyData>[] = [
+  {
+    key: "date",
+    label: "Date",
+    render: (value) => finnishDateFormatter.format(new Date(value)),
+  },
+  {
+    key: "totalConsumption",
+    label: "Total Consumption",
+    render: (value) => {
+      if (typeof value === "number") return value;
+      return "-";
     },
-    { key: "totalConsumption", label: "Total Consumption" },
-    { key: "totalProduction", label: "Total Production" },
-    { key: "averagePrice", label: "Average Price" },
-    { key: "consecutiveNegativeHours", label: "Negative Period" },
-  ] as const;
+  },
+  { key: "totalProduction", label: "Total Production" },
+  {
+    key: "averagePrice",
+    label: "Average Price",
+    render: (value) => {
+      if (typeof value === "number") return value.toFixed(2);
+      return "-";
+    },
+  },
+  { key: "consecutiveNegativeHours", label: "Negative Period" },
+] as const;
 
 export default function DailyStatisticsTable() {
   const [dailyStatistics, setDailyStatistics] = useState<TDailyData[]>([]);
@@ -58,7 +72,7 @@ export default function DailyStatisticsTable() {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <div className="overflow-hidden rounded-xl border">
         <Table>
           <TableHeader className="bg-muted">
@@ -98,6 +112,6 @@ export default function DailyStatisticsTable() {
         </Table>
       </div>
       {page && <PageSelector page={page} />}
-    </>
+    </div>
   );
 }
