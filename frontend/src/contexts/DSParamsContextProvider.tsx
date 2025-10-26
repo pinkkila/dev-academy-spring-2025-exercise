@@ -23,6 +23,7 @@ export default function DSParamsContextProvider({
       value={{
         setPageNumber,
         setPageSize,
+        sortBy,
         setSortBy,
         searchParams
       }}
