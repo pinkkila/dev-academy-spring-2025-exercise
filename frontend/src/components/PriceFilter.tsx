@@ -12,9 +12,9 @@ export default function PriceFilter() {
   }, [filterDebouncedPriceRange, setDebouncedPriceRange]);
 
   return (
-    <div>
+    <div className="space-y-4">
       <h2>Average Price</h2>
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-between">
         <p className="text-muted-foreground">{priceRange[0].toFixed(2)}</p>
         <p className="text-muted-foreground">{priceRange[1].toFixed(2)}</p>
       </div>
