@@ -11,18 +11,28 @@ export default function DSParamsContextProvider({
   const [sortBy, setSortBy] = useState("date,asc");
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
+  const [minConsumption, setMinConsumption] = useState<string | null>(null);
+  const [maxConsumption, setMaxConsumption] = useState<string | null>(null);
   const [debouncedPriceRange, setDebouncedPriceRange] = useState<[number, number] | null>(null);
   const [debouncedNegPeriodRange, setDebouncedNegPeriodRange] = useState<[number, number] | null>(null);
 
 
   const params = new URLSearchParams();
 
-  if (startDate && startDate) {
+  if (startDate) {
     params.set("startDate", startDate);
   }
-  if (endDate && endDate) {
+  if (endDate) {
     params.set("endDate", endDate);
   }
+
+  if (minConsumption) {
+    params.set("minTotalConsumption", minConsumption);
+  }
+  if (maxConsumption) {
+    params.set("maxTotalConsumption", maxConsumption);
+  }
+
 
   if (debouncedPriceRange && (debouncedPriceRange[0] !== -18.00)) {
     const minAveragePrice = debouncedPriceRange[0];
@@ -55,6 +65,8 @@ export default function DSParamsContextProvider({
         setStartDate,
         endDate,
         setEndDate,
+        setMinConsumption,
+        setMaxConsumption,
         setDebouncedPriceRange,
         setDebouncedNegPeriodRange,
         setPageNumber,

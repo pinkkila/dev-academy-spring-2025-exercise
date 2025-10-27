@@ -5,6 +5,8 @@ type DSParamsContext = {
   setStartDate: (startDate: string) => void;
   endDate: string | null;
   setEndDate: (endDate: string) => void;
+  setMinConsumption: (minConsumption: string) => void;
+  setMaxConsumption: (maxConsumption: string) => void;
   setDebouncedPriceRange: (debouncedPriceRange: [number, number]) => void;
   setDebouncedNegPeriodRange: (debouncedNegPeriodRange: [number, number]) => void;
   setPageNumber: (pageNumber: number) => void;
