@@ -15,10 +15,10 @@ export default function DSParamsContextProvider({
 
   const params = new URLSearchParams();
 
-  if (startDate && startDate !== "2020-12-30") {
+  if (startDate && startDate) {
     params.set("startDate", startDate);
   }
-  if (endDate && endDate !== "2024-09-30") {
+  if (endDate && endDate) {
     params.set("endDate", endDate);
   }
 

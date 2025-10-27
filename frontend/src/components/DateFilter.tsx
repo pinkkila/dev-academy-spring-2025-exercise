@@ -51,7 +51,7 @@ export default function DateFilter() {
               }}
               disabled={{
                 before: new Date(2020, 11, 31),
-                after: new Date(2024, 9, 1),
+                after: endDateValue ?? new Date(2024, 9, 1),
               }}
               weekStartsOn={1}
               showOutsideDays={false}
@@ -87,7 +87,7 @@ export default function DateFilter() {
                 setEndOpen(false);
               }}
               disabled={{
-                before: new Date(2020, 11, 31),
+                before: startDateValue ?? new Date(2020, 11, 31),
                 after: new Date(2024, 9, 1),
               }}
               weekStartsOn={1}
