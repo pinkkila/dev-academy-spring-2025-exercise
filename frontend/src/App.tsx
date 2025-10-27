@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator.tsx";
 import NegativePeriodFilter from "@/components/NegativePeriodFilter.tsx";
 import ConsumptionFilter from "@/components/ConsumptionFilter.tsx";
 import ProductionFilter from "@/components/ProductionFilter.tsx";
+import SingleDayChart from "@/components/SingleDayChart.tsx";
 
 export default function App() {
   return (
@@ -43,6 +44,7 @@ export default function App() {
 
       <section>
         <h2 className="text-2xl font-bold">Single day view</h2>
+        <SingleDayChart />
       </section>
     </Container>
   );

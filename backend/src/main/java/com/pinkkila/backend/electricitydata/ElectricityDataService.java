@@ -40,7 +40,7 @@ public class ElectricityDataService {
                 .orElse(null);
         
         var hourlyPrices = singleDayData.stream()
-                .map(electricityData -> new ElectricityDataSingeleDayDto.ElectricityHourPriceDto(electricityData.getStartTime(), electricityData.getHourlyPrice()))
+                .map(electricityData -> new ElectricityDataSingeleDayDto.ElectricityHourPriceDto(electricityData.getStartTime(), electricityData.getHourlyPrice().setScale(2, RoundingMode.HALF_UP)))
                 .toList();
         
         return new ElectricityDataSingeleDayDto(date, totalConsumption, totalProduction, averagePrice, hourWithMostConsumptionVsProduction, hourlyPrices);
