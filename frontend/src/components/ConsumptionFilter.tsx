@@ -3,49 +3,37 @@ import ConsumptionMaxForm from "@/components/ConsumptionMaxForm.tsx";
 import { useMemo, useState } from "react";
 import * as z from "zod";
 
+const baseNumericString = z
+  .string()
+  .refine((val) => val === "" || /^\d+(\.\d+)?$/.test(val), {
+    message: "Only positive numbers and decimals allowed",
+  })
+  .refine((val) => val === "" || parseFloat(val) <= 239656644.101, {
+    message: "Must be less than 239656644.101",
+  });
+
+
 function createMinSchema(maxValue: number | null) {
   return z.object({
-    minTotalConsumption: z
-      .string()
-      .refine((val) => val === "" || /^[0-9]*\.?[0-9]*$/.test(val), {
-        message: "Only positive numbers and decimals allowed",
-      })
-      .refine((val) => val === "" || parseFloat(val) >= 0, {
-        message: "No negative numbers allowed",
-      })
-      .refine((val) => val === "" || parseFloat(val) <= 46586807.351, {
-        message: "Must be less than 46586807.351",
-      })
-      .refine(
-        (val) => {
-          if (val === "" || maxValue == null) return true;
-          return parseFloat(val) < maxValue;
-        },
-        { message: "Minimum value must be smaller than maximum value" }
-      ),
+    minTotalConsumption: baseNumericString.refine(
+      (val) => {
+        if (val === "" || maxValue == null) return true;
+        return parseFloat(val) < maxValue;
+      },
+      { message: "Minimum value must be smaller than maximum value" }
+    ),
   });
 }
 
 function createMaxSchema(minValue: number | null) {
   return z.object({
-    maxTotalConsumption: z
-      .string()
-      .refine((val) => val === "" || /^[0-9]*\.?[0-9]*$/.test(val), {
-        message: "Only positive numbers and decimals allowed",
-      })
-      .refine((val) => val === "" || parseFloat(val) >= 0, {
-        message: "No negative numbers allowed",
-      })
-      .refine((val) => val === "" || parseFloat(val) <= 46586807.351, {
-        message: "Must be less than 46586807.351",
-      })
-      .refine(
-        (val) => {
-          if (val === "" || minValue == null) return true;
-          return parseFloat(val) > minValue;
-        },
-        { message: "Maximum value must be bigger than minimum value" }
-      ),
+    maxTotalConsumption: baseNumericString.refine(
+      (val) => {
+        if (val === "" || minValue == null) return true;
+        return parseFloat(val) > minValue;
+      },
+      { message: "Maximum value must be bigger than minimum value" }
+    ),
   });
 }
 

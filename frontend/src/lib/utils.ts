@@ -1,8 +1,9 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import * as React from "react";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export function formatLocalDate(date: Date) {
@@ -11,3 +12,19 @@ export function formatLocalDate(date: Date) {
   const d = String(date.getDate()).padStart(2, "0");
   return `${y}-${m}-${d}`;
 }
+
+export const handleNumericInput = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  onChange: (v: string) => void,
+) => {
+  const input = e.target.value;
+
+  if (input === "") {
+    onChange("");
+    return;
+  }
+
+  if (/^\d+(\.\d*)?$/.test(input)) {
+    onChange(input);
+  }
+};

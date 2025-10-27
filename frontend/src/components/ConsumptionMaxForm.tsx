@@ -7,12 +7,12 @@ import {
   FieldLabel,
 } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
-import * as React from "react";
 import { useDSParams } from "@/lib/hooks.ts";
+import { handleNumericInput } from "@/lib/utils.ts";
 
 type ConsumptionMaxFormProps = {
   schema: z.ZodObject<{ maxTotalConsumption: z.ZodString }>;
-  setMaxValue: (maxValue: number) => void;
+  setMaxValue: (maxValue: number | null) => void;
 }
 
 export default function ConsumptionMaxForm({ schema, setMaxValue }: ConsumptionMaxFormProps) {
@@ -26,24 +26,10 @@ export default function ConsumptionMaxForm({ schema, setMaxValue }: ConsumptionM
       onSubmit: schema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
-      setMaxValue(parseFloat(value.maxTotalConsumption));
+      setMaxValue(value.maxTotalConsumption === "" ? null : parseFloat(value.maxTotalConsumption));
       setMaxConsumption(value.maxTotalConsumption);
     },
   });
-
-  const handleNumericInput = (e: React.ChangeEvent<HTMLInputElement>, onChange: (v: string) => void) => {
-    const input = e.target.value;
-
-    if (input === "") {
-      onChange("");
-      return;
-    }
-
-    if (/^[0-9]*\.?[0-9]*$/.test(input)) {
-      onChange(input);
-    }
-  };
 
   return (
     <div>

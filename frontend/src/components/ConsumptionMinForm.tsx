@@ -7,17 +7,19 @@ import {
   FieldLabel,
 } from "@/components/ui/field.tsx";
 import { Input } from "@/components/ui/input.tsx";
-import * as React from "react";
 import { useDSParams } from "@/lib/hooks.ts";
+import { handleNumericInput } from "@/lib/utils.ts";
 
 type ConsumptionMinFormProps = {
   schema: z.ZodObject<{ minTotalConsumption: z.ZodString }>;
-  setMinValue: (maxValue: number) => void;
-}
+  setMinValue: (maxValue: number | null) => void;
+};
 
-export default function ConsumptionMinForm({schema, setMinValue}: ConsumptionMinFormProps) {
-  const { setMinConsumption } = useDSParams()
-
+export default function ConsumptionMinForm({
+  schema,
+  setMinValue,
+}: ConsumptionMinFormProps) {
+  const { setMinConsumption } = useDSParams();
 
   const form = useForm({
     defaultValues: {
@@ -27,25 +29,10 @@ export default function ConsumptionMinForm({schema, setMinValue}: ConsumptionMin
       onSubmit: schema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value);
-      setMinValue(parseFloat(value.minTotalConsumption))
+      setMinValue(value.minTotalConsumption === "" ? null : parseFloat(value.minTotalConsumption));
       setMinConsumption(value.minTotalConsumption);
     },
-
   });
-
-  const handleNumericInput = (e: React.ChangeEvent<HTMLInputElement>, onChange: (v: string) => void) => {
-    const input = e.target.value;
-
-    if (input === "") {
-      onChange("");
-      return;
-    }
-
-    if (/^[0-9]*\.?[0-9]*$/.test(input)) {
-      onChange(input);
-    }
-  };
 
   return (
     <div>
@@ -64,14 +51,16 @@ export default function ConsumptionMinForm({schema, setMinValue}: ConsumptionMin
                 field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Minimum Total Consumption</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>
+                    Minimum Total Consumption
+                  </FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
                     inputMode="decimal"
                     value={field.state.value}
                     onBlur={() => {
-                      field.handleBlur()
+                      field.handleBlur();
                       if (field.state.meta.isDirty) {
                         form.handleSubmit();
                       }
