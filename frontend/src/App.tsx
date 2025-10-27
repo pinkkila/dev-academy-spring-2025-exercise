@@ -6,6 +6,7 @@ import DateFilter from "@/components/DateFilter.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import NegativePeriodFilter from "@/components/NegativePeriodFilter.tsx";
 import ConsumptionFilter from "@/components/ConsumptionFilter.tsx";
+import ProductionFilter from "@/components/ProductionFilter.tsx";
 
 export default function App() {
   return (
@@ -29,6 +30,8 @@ export default function App() {
               <NegativePeriodFilter />
               <Separator />
               <ConsumptionFilter />
+              <Separator />
+              <ProductionFilter />
             </div>
           </div>
 
