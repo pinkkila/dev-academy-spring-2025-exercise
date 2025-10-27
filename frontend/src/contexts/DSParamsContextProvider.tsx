@@ -12,6 +12,8 @@ export default function DSParamsContextProvider({
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [debouncedPriceRange, setDebouncedPriceRange] = useState<[number, number] | null>(null);
+  const [debouncedNegPeriodRange, setDebouncedNegPeriodRange] = useState<[number, number] | null>(null);
+
 
   const params = new URLSearchParams();
 
@@ -22,10 +24,22 @@ export default function DSParamsContextProvider({
     params.set("endDate", endDate);
   }
 
-  if (debouncedPriceRange && (debouncedPriceRange[0] !== -18.00 || debouncedPriceRange[1] !== 109.97)) {
-    const [minAveragePrice, maxAveragePrice] = debouncedPriceRange;
+  if (debouncedPriceRange && (debouncedPriceRange[0] !== -18.00)) {
+    const minAveragePrice = debouncedPriceRange[0];
     params.set("minAveragePrice", minAveragePrice.toString());
+  }
+  if (debouncedPriceRange && (debouncedPriceRange[1] !== 109.97)) {
+    const maxAveragePrice = debouncedPriceRange[1];
     params.set("maxAveragePrice", maxAveragePrice.toString());
+  }
+
+  if (debouncedNegPeriodRange && (debouncedNegPeriodRange[0] !== 0)) {
+    const minConsecutiveNegativeHours = debouncedNegPeriodRange[0];
+    params.set("minConsecutiveNegativeHours", minConsecutiveNegativeHours.toString());
+  }
+  if (debouncedNegPeriodRange && (debouncedNegPeriodRange[1] !== 24)) {
+    const maxConsecutiveNegativeHours = debouncedNegPeriodRange[1];
+    params.set("maxConsecutiveNegativeHours", maxConsecutiveNegativeHours.toString());
   }
 
   params.set("page", pageNumber.toString());
@@ -42,6 +56,7 @@ export default function DSParamsContextProvider({
         endDate,
         setEndDate,
         setDebouncedPriceRange,
+        setDebouncedNegPeriodRange,
         setPageNumber,
         setPageSize,
         sortBy,

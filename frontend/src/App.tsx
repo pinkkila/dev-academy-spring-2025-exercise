@@ -4,6 +4,7 @@ import DailyStatisticsTable from "@/components/DailyStatisticsTable.tsx";
 import PriceFilter from "@/components/PriceFilter.tsx";
 import DateFilter from "@/components/DateFilter.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
+import NegativePeriodFilter from "@/components/NegativePeriodFilter.tsx";
 
 export default function App() {
   return (
@@ -23,6 +24,8 @@ export default function App() {
               <DateFilter />
               <Separator />
               <PriceFilter />
+              <Separator />
+              <NegativePeriodFilter />
             </div>
           </div>
 

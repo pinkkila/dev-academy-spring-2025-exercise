@@ -6,6 +6,7 @@ type DSParamsContext = {
   endDate: string | null;
   setEndDate: (endDate: string) => void;
   setDebouncedPriceRange: (debouncedPriceRange: [number, number]) => void;
+  setDebouncedNegPeriodRange: (debouncedNegPeriodRange: [number, number]) => void;
   setPageNumber: (pageNumber: number) => void;
   setPageSize: (pageSize: number) => void;
   sortBy: string;
