@@ -1,4 +1,4 @@
-import type { THourlyPrice, TSingleDayData } from "@/lib/types.ts";
+import type { TSingleDayData } from "@/lib/types.ts";
 import {
   Item,
   ItemContent,
@@ -11,6 +11,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover.tsx";
+import { HourPriceTable } from "@/components/HourPriceTable.tsx";
+import { HourPriceColumns } from "@/components/HourPriceColumns.tsx";
+import { Button } from "@/components/ui/button.tsx";
 
 type SingleDayStatisticsProps = {
   singleDayData: TSingleDayData;
@@ -50,19 +53,17 @@ export default function SingleDayStatistics({
         </Item>
         <Item>
           <ItemContent>
-            <ItemTitle>Cheapest hours</ItemTitle>
+            {/*<ItemTitle>Cheapest hours</ItemTitle>*/}
             <ItemDescription>
               <Popover>
-                <PopoverTrigger>Open</PopoverTrigger>
+                <PopoverTrigger asChild>
+                  <Button variant="outline">Hourly Prices</Button>
+                </PopoverTrigger>
                 <PopoverContent>
-                  <ul>
-                    {sortAndFormatCheapestHours(singleDayData.hourlyPrices).map( hour => (
-                      <li key={hour.time}>
-                        {hour.time}: {hour.price} €
-                      </li>
-                      )
-                    )}
-                  </ul>
+                  <HourPriceTable
+                    columns={HourPriceColumns}
+                    data={singleDayData.hourlyPrices}
+                  />
                 </PopoverContent>
               </Popover>
             </ItemDescription>
@@ -71,27 +72,4 @@ export default function SingleDayStatistics({
       </div>
     </ItemGroup>
   );
-}
-
-const formatHour = (isoString: string): string => {
-  const date = new Date(isoString);
-  return date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-};
-
-const formatPrice = (value: number): string => value.toFixed(2);
-
-function sortAndFormatCheapestHours(hours: THourlyPrice[]) {
-  const sortedHours = [...hours].sort((a, b) => a.hourlyPrice - b.hourlyPrice);
-
-  return sortedHours.map((hour) => {
-    const formattedTime = formatHour(hour.startTime);
-    return {
-      time: formattedTime,
-      price: formatPrice(hour.hourlyPrice)
-    };
-  });
 }
