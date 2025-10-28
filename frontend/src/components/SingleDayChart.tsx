@@ -1,6 +1,12 @@
-import { useEffect, useState } from "react";
-import type { TSingleDayData } from "@/lib/types.ts";
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+import type { THourlyPrice } from "@/lib/types.ts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
 import {
   type ChartConfig,
   ChartContainer,
@@ -15,68 +21,68 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function SingleDayChart() {
-  const [singleDayData, setSingleDayData] = useState<TSingleDayData | null>(
-    null,
-  );
-
-  const formattedHourlyData = singleDayData?.hourlyPrices.map((data) => {
-    const date = new Date(data.startTime);
-    const formattedDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date
-      .getHours()
-      .toString()
-      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
-
-    return {
-      startTime: formattedDate,
-      hourlyPrice: data.hourlyPrice,
-    };
+const formatHour = (isoString: string): string => {
+  const date = new Date(isoString);
+  return date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
   });
+};
 
-  useEffect(() => {
-    const getData = async () => {
-      const response = await fetch(
-        `http://localhost:8080/api/electricity/day/2023-01-04`,
-      );
-      if (!response.ok)
-        throw new Error("Error in fetch: " + response.statusText);
-      const data: TSingleDayData = await response.json();
-      setSingleDayData(data);
-    };
-    getData();
-  }, []);
+const formatFullDateTime = (isoString: string): string => {
+  const date = new Date(isoString);
+  return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date
+    .getHours()
+    .toString()
+    .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+};
+
+const formatPrice = (value: number): string => value.toFixed(2);
+
+type Props = {
+  data: THourlyPrice[];
+};
+
+export default function SingleDayChart({ data }: Props) {
 
   return (
-    <div>
-      <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-        {/*<BarChart accessibilityLayer data={singleDayData?.hourlyPrices}>*/}
-        <BarChart accessibilityLayer data={formattedHourlyData}>
-          <CartesianGrid vertical={false} />
-          <XAxis
-            dataKey="startTime"
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={(value) =>
-              new Date(value).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false,
-              })
-            }
-          />
-          <ChartTooltip content={<ChartTooltipContent />} />
-          <Bar dataKey="hourlyPrice" fill="var(--color-hourlyPrice)" radius={4}>
-            <LabelList
-              position="top"
-              offset={12}
-              className="fill-foreground"
-              fontSize={12}
-              formatter={(value: number) => value.toFixed(2)}
+    <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+      <BarChart accessibilityLayer data={data}>
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="startTime"
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          tickFormatter={formatHour}
+        />
+        <YAxis
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+          tickFormatter={(value) => `${formatPrice(value)} €`}
+        />
+        <ChartTooltip
+          labelFormatter={formatFullDateTime}
+          content={
+            <ChartTooltipContent
+              formatter={(value) => [
+                `Price: ${formatPrice(Number(value))} €`
+              ]}
             />
-          </Bar>
-        </BarChart>
-      </ChartContainer>
-    </div>
+          }
+        />
+        <Bar dataKey="hourlyPrice" fill="var(--color-hourlyPrice)" radius={4}>
+          <LabelList
+            position="top"
+            offset={12}
+            className="fill-foreground"
+            fontSize={12}
+            formatter={formatPrice}
+          />
+        </Bar>
+      </BarChart>
+    </ChartContainer>
   );
 }

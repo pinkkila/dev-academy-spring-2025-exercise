@@ -1,8 +1,14 @@
-import type { ReactNode } from "react";
+import { cn } from "@/lib/utils.ts";
+import * as React from "react";
 
-export default function Container({ children }: {children: ReactNode}) {
+type ContainerProps = {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export default function Container({ children, className }: ContainerProps) {
   return (
-    <div className="flex flex-col max-w-7xl mx-auto min-h-screen py-8 px-6">
+    <div className={cn("flex flex-col max-w-7xl mx-auto min-h-screen py-8 px-6 gap-5", className)}>
       {children}
     </div>
   );

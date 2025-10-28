@@ -7,32 +7,32 @@ import { Separator } from "@/components/ui/separator.tsx";
 import NegativePeriodFilter from "@/components/NegativePeriodFilter.tsx";
 import ConsumptionFilter from "@/components/ConsumptionFilter.tsx";
 import ProductionFilter from "@/components/ProductionFilter.tsx";
-import SingleDayChart from "@/components/SingleDayChart.tsx";
+import SingleDayView from "@/components/SingleDayView.tsx";
 
 export default function App() {
   return (
-    <Container>
+    <Container className="gap-8">
+
       <div className="flex justify-end">
         <ThemeModeToggle />
       </div>
 
-      <section className="flex flex-col gap-8">
+      <section className="flex flex-col gap-6">
         <h2 className="text-3xl font-bold">Daily statistics list</h2>
 
         <div className="flex flex-col gap-8 lg:flex-row">
           <div className="flex flex-col lg:w-1/3 gap-6 ">
             <h3 className="text-2xl font-bold">Filters:</h3>
-
-            <div className="w-full flex flex-col gap-8">
+            <div className="w-full flex flex-col gap-4">
               <DateFilter />
-              <Separator />
-              <PriceFilter />
-              <Separator />
-              <NegativePeriodFilter />
               <Separator />
               <ConsumptionFilter />
               <Separator />
               <ProductionFilter />
+              <Separator />
+              <PriceFilter />
+              <Separator />
+              <NegativePeriodFilter />
             </div>
           </div>
 
@@ -42,9 +42,9 @@ export default function App() {
         </div>
       </section>
 
-      <section>
+      <section className="flex flex-col gap-6">
         <h2 className="text-2xl font-bold">Single day view</h2>
-        <SingleDayChart />
+        <SingleDayView />
       </section>
     </Container>
   );
