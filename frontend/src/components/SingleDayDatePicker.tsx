@@ -8,8 +8,7 @@ import {
 import { Button } from "@/components/ui/button.tsx";
 import { ChevronDownIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar.tsx";
-
-const finnishDateFormatter = new Intl.DateTimeFormat("fi-FI");
+import { finnishDateFormatter } from "@/lib/utils.ts";
 
 type SingleDayDatePickerProps = {
   selectedDay: Date | undefined;

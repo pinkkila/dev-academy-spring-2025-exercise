@@ -9,9 +9,7 @@ import {
 import { Label } from "@/components/ui/label.tsx";
 import { useState } from "react";
 import { useDSParams } from "@/lib/hooks.ts";
-import { formatLocalDate } from "@/lib/utils.ts";
-
-const finnishDateFormatter = new Intl.DateTimeFormat("fi-FI");
+import { finnishDateFormatter, formatLocalDate } from "@/lib/utils.ts";
 
 export default function DateFilter() {
   const [startOpen, setStartOpen] = useState(false);

@@ -14,6 +14,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
 import * as React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
+import { finnishDateFormatter } from "@/lib/utils.ts";
 
 type TColumn<T> = {
   key: keyof T;
@@ -21,7 +22,6 @@ type TColumn<T> = {
   render?: (value: T[keyof T]) => React.ReactNode;
 };
 
-const finnishDateFormatter = new Intl.DateTimeFormat("fi-FI");
 const columns: TColumn<TDailyData>[] = [
   {
     key: "date",

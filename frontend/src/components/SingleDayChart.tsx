@@ -13,6 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { formatFullDateTime, formatHour, formatPrice } from "@/lib/utils.ts";
 
 const chartConfig = {
   hourlyPrice: {
@@ -20,25 +21,6 @@ const chartConfig = {
     color: "#2563eb",
   },
 } satisfies ChartConfig;
-
-const formatHour = (isoString: string): string => {
-  const date = new Date(isoString);
-  return date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-};
-
-const formatFullDateTime = (isoString: string): string => {
-  const date = new Date(isoString);
-  return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date
-    .getHours()
-    .toString()
-    .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
-};
-
-const formatPrice = (value: number): string => value.toFixed(2);
 
 type Props = {
   data: THourlyPrice[];

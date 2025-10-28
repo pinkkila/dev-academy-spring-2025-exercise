@@ -2,17 +2,7 @@ import { type ColumnDef } from "@tanstack/react-table";
 import type { THourlyPrice } from "@/lib/types.ts";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
-
-const formatHour = (isoString: string): string => {
-  const date = new Date(isoString);
-  return date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-};
-
-const formatPrice = (value: number): string => value.toFixed(2);
+import { formatHour, formatPrice } from "@/lib/utils.ts";
 
 export const HourPriceColumns: ColumnDef<THourlyPrice>[] = [
   {

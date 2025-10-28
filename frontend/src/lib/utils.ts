@@ -6,6 +6,28 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function handleNumericInput(
+  e: React.ChangeEvent<HTMLInputElement>,
+  onChange: (v: string) => void,
+) {
+  const input = e.target.value;
+  if (input === "") {
+    onChange("");
+    return;
+  }
+  if (/^\d+(\.\d*)?$/.test(input)) {
+    onChange(input);
+  }
+}
+
+// ─────────────────────────────
+// Formatters
+// ─────────────────────────────
+
+// Formats a Date → "31.12.2020" (Finnish locale)
+export const finnishDateFormatter = new Intl.DateTimeFormat("fi-FI");
+
+// Formats a Date → "YYYY-MM-DD"
 export function formatLocalDate(date: Date) {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -13,18 +35,24 @@ export function formatLocalDate(date: Date) {
   return `${y}-${m}-${d}`;
 }
 
-export const handleNumericInput = (
-  e: React.ChangeEvent<HTMLInputElement>,
-  onChange: (v: string) => void,
-) => {
-  const input = e.target.value;
-
-  if (input === "") {
-    onChange("");
-    return;
-  }
-
-  if (/^\d+(\.\d*)?$/.test(input)) {
-    onChange(input);
-  }
+// Formats an ISO string → "HH:MM" (24-hour clock)
+export const formatHour = (isoString: string): string => {
+  const date = new Date(isoString);
+  return date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
 };
+
+// Formats an ISO string → "D.M.YYYY HH:MM"
+export const formatFullDateTime = (isoString: string): string => {
+  const date = new Date(isoString);
+  return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${date
+    .getHours()
+    .toString()
+    .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+};
+
+// Formats a number → "0.00"
+export const formatPrice = (value: number): string => value.toFixed(2);

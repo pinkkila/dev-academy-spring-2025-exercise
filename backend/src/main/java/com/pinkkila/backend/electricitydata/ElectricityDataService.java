@@ -65,7 +65,7 @@ public class ElectricityDataService {
         LocalDateTime hourWithMostConsumptionVsProduction = null;
         if  (!hasNullConsumptionValues && !hasNullProductionValues) {
             hourWithMostConsumptionVsProduction = singleDayData.stream()
-                .max(Comparator.comparing(e -> e.getConsumptionAmount().compareTo(e.getProductionAmount())))
+                .max(Comparator.comparing(e -> e.getConsumptionAmount().subtract(e.getProductionAmount())))
                 .map(ElectricityData::getStartTime)
                 .orElse(null);
         }

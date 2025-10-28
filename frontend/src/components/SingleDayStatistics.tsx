@@ -14,6 +14,7 @@ import {
 import { HourPriceTable } from "@/components/HourPriceTable.tsx";
 import { HourPriceColumns } from "@/components/HourPriceColumns.tsx";
 import { Button } from "@/components/ui/button.tsx";
+import { formatHour } from "@/lib/utils.ts";
 
 type SingleDayStatisticsProps = {
   singleDayData: TSingleDayData;
@@ -40,14 +41,14 @@ export default function SingleDayStatistics({
         <Item>
           <ItemContent>
             <ItemTitle>Average Price</ItemTitle>
-            <ItemDescription>{singleDayData.averagePrice === null ? "No data" : singleDayData.averagePrice}</ItemDescription>
+            <ItemDescription>{singleDayData.averagePrice === null ? "No data" : singleDayData.averagePrice.toFixed(2) + " €"}</ItemDescription>
           </ItemContent>
         </Item>
         <Item>
           <ItemContent>
             <ItemTitle>Most Consumptioin vs Production</ItemTitle>
             <ItemDescription>
-              {singleDayData.hourWithMostConsumptionVsProduction === null ? "No data" : singleDayData.hourWithMostConsumptionVsProduction}
+              {singleDayData.hourWithMostConsumptionVsProduction === null ? "No data" : formatHour(singleDayData.hourWithMostConsumptionVsProduction)}
             </ItemDescription>
           </ItemContent>
         </Item>
