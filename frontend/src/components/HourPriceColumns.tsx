@@ -1,6 +1,6 @@
-import { type ColumnDef } from "@tanstack/react-table"
+import { type ColumnDef } from "@tanstack/react-table";
 import type { THourlyPrice } from "@/lib/types.ts";
-import { ArrowUpDown } from "lucide-react"
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
 
 const formatHour = (isoString: string): string => {
@@ -22,15 +22,27 @@ export const HourPriceColumns: ColumnDef<THourlyPrice>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center justify-center w-full"
         >
           Hour
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <span className="inline-flex w-4 justify-center">
+            {(column.getIsSorted() === "asc" && (
+              <ChevronDown className="h-4 w-4" />
+            )) ||
+              (column.getIsSorted() === "desc" && (
+                <ChevronUp className="h-4 w-4" />
+              ))}
+          </span>
         </Button>
-      )
+      );
     },
-    cell: ({row}) => {
-      return <div className="text-center">{formatHour(row.getValue("startTime"))}</div>
-    }
+    cell: ({ row }) => {
+      return (
+        <div className="text-center">
+          {formatHour(row.getValue("startTime"))}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "hourlyPrice",
@@ -39,16 +51,26 @@ export const HourPriceColumns: ColumnDef<THourlyPrice>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="flex items-center justify-center w-full"
         >
           Price
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <span className="inline-flex w-4 justify-center">
+            {(column.getIsSorted() === "asc" && (
+              <ChevronDown className="h-4 w-4" />
+            )) ||
+              (column.getIsSorted() === "desc" && (
+                <ChevronUp className="h-4 w-4" />
+              ))}
+          </span>
         </Button>
-      )
+      );
     },
-    cell: ({row}) => {
-      return <div className="text-center">{formatPrice(row.getValue("hourlyPrice"))} €</div>
-    }
-  }
-]
-
-
+    cell: ({ row }) => {
+      return (
+        <div className="text-center">
+          {formatPrice(row.getValue("hourlyPrice"))} €
+        </div>
+      );
+    },
+  },
+];

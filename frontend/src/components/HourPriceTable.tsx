@@ -1,5 +1,3 @@
-"use client";
-
 import {
   type ColumnDef,
   type SortingState,
@@ -17,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import * as React from "react";
+import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -28,7 +26,7 @@ export function HourPriceTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([{ id: "hourlyPrice", desc: false }])
 
   const table = useReactTable({
     data,

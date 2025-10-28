@@ -62,7 +62,7 @@ export default function SingleDayStatistics({
                 <PopoverContent>
                   <HourPriceTable
                     columns={HourPriceColumns}
-                    data={singleDayData.hourlyPrices}
+                    data={singleDayData.hourlyPrices.slice()}
                   />
                 </PopoverContent>
               </Popover>
