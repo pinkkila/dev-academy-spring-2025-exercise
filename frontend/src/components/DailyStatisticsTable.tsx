@@ -81,12 +81,19 @@ export default function DailyStatisticsTable() {
                 <TableHead key={col.key} className="text-center">
                   <Button
                     variant="ghost"
-                    className="hover:underline hover:cursor-pointer"
+                    className="hover:underline hover:cursor-pointer relative"
                     onClick={() => handleSort(col.key)}
                   >
                     {col.label}
-                    {sortBy === `${col.key},asc` && <ChevronDown />}
-                    {sortBy === `${col.key},desc` && <ChevronUp />}
+
+                    <span className="w-4 absolute -right-1">
+                      {sortBy === `${col.key},asc` && (
+                        <ChevronDown className="h-4 w-4" />
+                      )}
+                      {sortBy === `${col.key},desc` && (
+                        <ChevronUp className="h-4 w-4" />
+                      )}
+                    </span>
                   </Button>
                 </TableHead>
               ))}

@@ -22,10 +22,10 @@ export const HourPriceColumns: ColumnDef<THourlyPrice>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="flex items-center justify-center w-full"
+          className="w-full hover:cursor-pointer relative"
         >
           Hour
-          <span className="inline-flex w-4 justify-center">
+          <span className="w-4 absolute right-4">
             {(column.getIsSorted() === "asc" && (
               <ChevronDown className="h-4 w-4" />
             )) ||
@@ -51,10 +51,10 @@ export const HourPriceColumns: ColumnDef<THourlyPrice>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="flex items-center justify-center w-full"
+          className="w-full hover:cursor-pointer relative"
         >
           Price
-          <span className="inline-flex w-4 justify-center">
+          <span className="w-4 absolute right-4">
             {(column.getIsSorted() === "asc" && (
               <ChevronDown className="h-4 w-4" />
             )) ||
