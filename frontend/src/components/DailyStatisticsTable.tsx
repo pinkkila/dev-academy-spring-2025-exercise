@@ -13,6 +13,7 @@ import { useDSParams } from "@/lib/hooks.ts";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
 import * as React from "react";
+import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 
 type TColumn<T> = {
   key: keyof T;
@@ -74,49 +75,51 @@ export default function DailyStatisticsTable() {
   return (
     <div className="flex flex-col gap-2">
       <div className="overflow-hidden rounded-xl border">
-        <Table>
-          <TableHeader className="bg-muted">
-            <TableRow className="">
-              {columns.map((col) => (
-                <TableHead key={col.key} className="text-center">
-                  <Button
-                    variant="ghost"
-                    className="hover:underline hover:cursor-pointer relative"
-                    onClick={() => handleSort(col.key)}
-                  >
-                    {col.label}
+        <ScrollArea className="h-[781.5px]">
+          <Table>
+            <TableHeader className="bg-muted">
+              <TableRow className="">
+                {columns.map((col) => (
+                  <TableHead key={col.key} className="text-center">
+                    <Button
+                      variant="ghost"
+                      className="hover:underline hover:cursor-pointer relative"
+                      onClick={() => handleSort(col.key)}
+                    >
+                      {col.label}
 
-                    <span className="w-4 absolute -right-1">
-                      {sortBy === `${col.key},asc` && (
-                        <ChevronDown className="h-4 w-4" />
-                      )}
-                      {sortBy === `${col.key},desc` && (
-                        <ChevronUp className="h-4 w-4" />
-                      )}
-                    </span>
-                  </Button>
-                </TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {dailyStatistics.map((dailyData: TDailyData) => (
-              <TableRow
-                key={dailyData.date}
-                onClick={() => console.log(dailyData.date)}
-              >
-                {columns.map((col) => {
-                  const value = dailyData[col.key];
-                  return (
-                    <TableCell key={col.key} className="text-center">
-                      {col.render ? col.render(value) : value}
-                    </TableCell>
-                  );
-                })}
+                      <span className="w-4 absolute -right-1">
+                        {sortBy === `${col.key},asc` && (
+                          <ChevronDown className="h-4 w-4" />
+                        )}
+                        {sortBy === `${col.key},desc` && (
+                          <ChevronUp className="h-4 w-4" />
+                        )}
+                      </span>
+                    </Button>
+                  </TableHead>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {dailyStatistics.map((dailyData: TDailyData) => (
+                <TableRow
+                  key={dailyData.date}
+                  onClick={() => console.log(dailyData.date)}
+                >
+                  {columns.map((col) => {
+                    const value = dailyData[col.key];
+                    return (
+                      <TableCell key={col.key} className="text-center">
+                        {col.render ? col.render(value) : value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </ScrollArea>
       </div>
       {page && <PageSelector page={page} />}
     </div>

@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -26,7 +27,9 @@ export function HourPriceTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([{ id: "hourlyPrice", desc: false }])
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "hourlyPrice", desc: false },
+  ]);
 
   const table = useReactTable({
     data,
@@ -40,7 +43,7 @@ export function HourPriceTable<TData, TValue>({
   });
 
   return (
-    <div className="overflow-hidden">
+    <ScrollArea className="h-96">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -83,6 +86,6 @@ export function HourPriceTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-    </div>
+    </ScrollArea>
   );
 }

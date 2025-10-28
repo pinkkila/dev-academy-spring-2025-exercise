@@ -35,7 +35,7 @@ export default function PageSelector({ page }: { page: TPage }) {
             <SelectValue placeholder={page.size} />
           </SelectTrigger>
           <SelectContent side="top">
-            {[15, 20, 30, 40, 50].map((pageSize) => (
+            {[20, 30, 40, 50, 100].map((pageSize) => (
               <SelectItem key={pageSize} value={`${pageSize}`}>
                 {pageSize}
               </SelectItem>
