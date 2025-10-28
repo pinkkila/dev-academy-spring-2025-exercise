@@ -8,6 +8,6 @@ public record ElectricityDataDaily(
         BigDecimal totalConsumption,
         BigDecimal totalProduction,
         BigDecimal averagePrice,
-        int consecutiveNegativeHours
+        Integer consecutiveNegativeHours
 ) {
 }

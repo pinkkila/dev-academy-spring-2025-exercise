@@ -1,5 +1,6 @@
 package com.pinkkila.backend.exception;
 
+import com.pinkkila.backend.electricitydata.SingleDayStatisticsNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    
+    @ExceptionHandler(SingleDayStatisticsNotFoundException.class)
+    public ResponseEntity<ApiException> handleSingleDayStatisticsNotFoundException(SingleDayStatisticsNotFoundException ex) {
+        log.warn(ex.getMessage());
+        var exeption = new ApiException(
+                HttpStatus.NOT_FOUND.value(),
+                "Data for date not found",
+                ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exeption);
+    }
     
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ApiException> handleBadRequesException(BadRequestException ex) {

@@ -36,7 +36,13 @@ const columns: TColumn<TDailyData>[] = [
       return "-";
     },
   },
-  { key: "totalProduction", label: "Total Production" },
+  { key: "totalProduction",
+    label: "Total Production",
+    render: (value) => {
+      if (typeof value === "number") return value;
+      return "-";
+    },
+  },
   {
     key: "averagePrice",
     label: "Average Price",
@@ -45,7 +51,13 @@ const columns: TColumn<TDailyData>[] = [
       return "-";
     },
   },
-  { key: "consecutiveNegativeHours", label: "Negative Period" },
+  { key: "consecutiveNegativeHours",
+    label: "Negative Period",
+    render: (value) => {
+      if (typeof value === "number") return value;
+      return "-";
+    },
+  },
 ] as const;
 
 export default function DailyStatisticsTable() {

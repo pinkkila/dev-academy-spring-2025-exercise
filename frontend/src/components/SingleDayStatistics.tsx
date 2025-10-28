@@ -28,32 +28,31 @@ export default function SingleDayStatistics({
         <Item>
           <ItemContent>
             <ItemTitle>Total Consumption</ItemTitle>
-            <ItemDescription>{singleDayData.totalConsumption}</ItemDescription>
+            <ItemDescription>{singleDayData.totalConsumption === null ? "No Data" : singleDayData.totalConsumption}</ItemDescription>
           </ItemContent>
         </Item>
         <Item>
           <ItemContent>
             <ItemTitle>Total Production</ItemTitle>
-            <ItemDescription>{singleDayData.totalProduction}</ItemDescription>
+            <ItemDescription>{singleDayData.totalProduction === null ? "No Data" : singleDayData.totalProduction}</ItemDescription>
           </ItemContent>
         </Item>
         <Item>
           <ItemContent>
             <ItemTitle>Average Price</ItemTitle>
-            <ItemDescription>{singleDayData.averagePrice}</ItemDescription>
+            <ItemDescription>{singleDayData.averagePrice === null ? "No data" : singleDayData.averagePrice}</ItemDescription>
           </ItemContent>
         </Item>
         <Item>
           <ItemContent>
             <ItemTitle>Most Consumptioin vs Production</ItemTitle>
             <ItemDescription>
-              {singleDayData.hourWithMostConsumptionVsProduction}
+              {singleDayData.hourWithMostConsumptionVsProduction === null ? "No data" : singleDayData.hourWithMostConsumptionVsProduction}
             </ItemDescription>
           </ItemContent>
         </Item>
         <Item>
           <ItemContent>
-            {/*<ItemTitle>Cheapest hours</ItemTitle>*/}
             <ItemDescription>
               <Popover>
                 <PopoverTrigger asChild>
@@ -62,7 +61,7 @@ export default function SingleDayStatistics({
                 <PopoverContent>
                   <HourPriceTable
                     columns={HourPriceColumns}
-                    data={singleDayData.hourlyPrices.slice()}
+                    data={singleDayData.hourlyPrices}
                   />
                 </PopoverContent>
               </Popover>

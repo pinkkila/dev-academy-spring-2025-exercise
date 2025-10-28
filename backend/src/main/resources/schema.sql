@@ -37,9 +37,32 @@ WITH add_indicator AS (SELECT *, CASE WHEN hourly_price < 0 THEN 0 ELSE 1 END AS
                                         ELSE COUNT(*) OVER (PARTITION BY date, daily_negative_seqs) END AS negative_hours_seq_count
                              FROM mark_daily_negative_seqs)
 SELECT date,
-       SUM(production_amount)                     as total_production,
-       SUM(consumption_amount)                    as total_consumption,
-       AVG(hourly_price)::NUMERIC(6,2)            as average_price,
-       COALESCE(MAX(negative_hours_seq_count), 0) as consecutive_negative_hours
+       CASE
+           WHEN COUNT(*) FILTER (WHERE production_amount IS NULL) > 0
+               OR COUNT(*) < 24
+               THEN NULL
+           ELSE SUM(production_amount)
+           END AS total_production,
+
+       CASE
+           WHEN COUNT(*) FILTER (WHERE consumption_amount IS NULL) > 0
+               OR COUNT(*) < 24
+               THEN NULL
+           ELSE SUM(consumption_amount)
+           END AS total_consumption,
+
+       CASE
+           WHEN COUNT(*) FILTER (WHERE hourly_price IS NULL) > 0
+               OR COUNT(*) < 24
+               THEN NULL
+           ELSE ROUND(AVG(hourly_price)::NUMERIC, 2)
+           END AS average_price,
+       CASE
+           WHEN COUNT(*) < 24
+               THEN NULL
+           ELSE COALESCE(MAX(negative_hours_seq_count), 0)
+           END as consecutive_negative_hours
 FROM count_negative_seqs
 GROUP BY date;
+
+
