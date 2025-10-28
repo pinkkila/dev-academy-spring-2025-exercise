@@ -68,7 +68,7 @@ export const HourPriceColumns: ColumnDef<THourlyPrice>[] = [
     cell: ({ row }) => {
       return (
         <div className="text-center">
-          {formatPrice(row.getValue("hourlyPrice"))} €
+          {row.getValue("hourlyPrice") === null ? "No data" : `${formatPrice(row.getValue("hourlyPrice"))} €`}
         </div>
       );
     },

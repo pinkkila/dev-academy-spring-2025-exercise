@@ -43,7 +43,6 @@ export default function App() {
       </section>
 
       <section className="flex flex-col gap-6">
-        <h2 className="text-2xl font-bold">Single day view</h2>
         <SingleDayView />
       </section>
     </Container>

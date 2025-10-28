@@ -25,18 +25,42 @@ export default function SingleDayView() {
   }, [selectedDay]);
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex gap-6">
-        <SingleDayDatePicker
-          selectedDay={selectedDay}
-          setSelectedDay={setSelectedDay}
-        />
+    <>
+      <h2 className="text-2xl font-bold">
+        Single day view
+        <span> {singleDayData?.date} </span>
+        {singleDayData && singleDayData.hourlyPrices.length < 24 && (
+          <span>*</span>
+        )}
+      </h2>
+      <div className="flex flex-col gap-8">
+        <div className="flex gap-6">
+          <SingleDayDatePicker
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+          />
+          {singleDayData && (
+            <SingleDayStatistics singleDayData={singleDayData} />
+          )}
+        </div>
+
         {singleDayData && (
-          <SingleDayStatistics singleDayData={singleDayData} />
+          <div className="flex flex-col gap-2">
+            {singleDayData.hourlyPrices.length < 24 && (
+              <span className="text-muted-foreground text-sm ml-auto">
+                * data may be incomplete for this day
+              </span>
+            )}
+            <SingleDayChart
+              data={singleDayData.hourlyPrices
+                .slice()
+                .sort(
+                  (a, b) => +new Date(a.startTime) - +new Date(b.startTime),
+                )}
+            />
+          </div>
         )}
       </div>
-
-      {singleDayData && <SingleDayChart data={singleDayData.hourlyPrices} />}
-    </div>
+    </>
   );
 }
