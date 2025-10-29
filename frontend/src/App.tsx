@@ -5,10 +5,9 @@ import PriceFilter from "@/components/PriceFilter.tsx";
 import DateFilter from "@/components/DateFilter.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import NegativePeriodFilter from "@/components/NegativePeriodFilter.tsx";
-// import ConsumptionFilter from "@/components/ConsumptionFilter.tsx";
 import ProductionFilter from "@/components/ProductionFilter.tsx";
 import SingleDayView from "@/components/SingleDayView.tsx";
-import ConsumptionFilter2 from "@/components/ConsumptionFilter2.tsx";
+import ConsumptionFilter from "@/components/ConsumptionFilter.tsx";
 
 export default function App() {
   return (
@@ -27,8 +26,7 @@ export default function App() {
             <div className="w-full flex flex-col gap-4">
               <DateFilter />
               <Separator />
-              {/*<ConsumptionFilter />*/}
-              <ConsumptionFilter2 />
+              <ConsumptionFilter />
               <Separator />
               <ProductionFilter />
               <Separator />

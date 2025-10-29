@@ -73,63 +73,6 @@ function createBaseNumericString(maxAllowed: number) {
     });
 }
 
-export function createMinSchema<const TField extends string>(
-  fieldName: TField,
-  maxValue: number | null,
-  maxAllowed: number,
-) {
-  return z.object({
-    [fieldName]: createBaseNumericString(maxAllowed).refine(
-      (val) => {
-        if (val === "" || maxValue == null) return true;
-        return parseFloat(val) < maxValue;
-      },
-      { message: "Minimum value must be smaller than maximum value" },
-    ),
-  }) as z.ZodObject<{ [K in TField]: z.ZodString }>;
-}
-
-export function createMaxSchema<const TField extends string>(
-  fieldName: TField,
-  minValue: number | null,
-  maxAllowed: number,
-) {
-  return z.object({
-    [fieldName]: createBaseNumericString(maxAllowed).refine(
-      (val) => {
-        if (val === "" || minValue == null) return true;
-        return parseFloat(val) > minValue;
-      },
-      { message: "Maximum value must be bigger than minimum value" },
-    ),
-  }) as z.ZodObject<{ [K in TField]: z.ZodString }>;
-}
-
-// export function createNumericFieldFormSchema<const TField extends string>(
-//   maxAllowed: number,
-//   minValue: number | null,
-//   maxValue: number | null,
-//   minFieldName: TField,
-//   maxFieldName: TField,
-// ) {
-//   return z.object({
-//     [minFieldName]: createBaseNumericString(maxAllowed).refine(
-//       (val) => {
-//         if (val === "" || maxValue == null) return true;
-//         return parseFloat(val) < maxValue;
-//       },
-//       { message: "Minimum value must be smaller than maximum value" },
-//     ),
-//     [maxFieldName]: createBaseNumericString(maxAllowed).refine(
-//       (val) => {
-//         if (val === "" || minValue == null) return true;
-//         return parseFloat(val) > minValue;
-//       },
-//       { message: "Maximum value must be bigger than minimum value" },
-//     ),
-//   }) as z.ZodObject<{ [K in TField]: z.ZodString }>;
-// }
-
 export function createNumericFieldFormSchema<TField extends string>(
   fieldName: TField,
   maxAllowed: number,
