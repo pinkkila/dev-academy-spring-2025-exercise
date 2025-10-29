@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as React from "react";
+import * as z from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -56,3 +57,50 @@ export const formatFullDateTime = (isoString: string): string => {
 
 // Formats a number → "0.00"
 export const formatPrice = (value: number): string => value.toFixed(2);
+
+// ─────────────────────────────
+// Zod Schemas
+// ─────────────────────────────
+
+function createBaseNumericString(maxAllowed: number) {
+  return z
+    .string()
+    .refine((val) => val === "" || /^\d+(\.\d+)?$/.test(val), {
+      message: "Only positive numbers and decimals allowed",
+    })
+    .refine((val) => val === "" || parseFloat(val) <= 239656644.101, {
+      message: `Must be less or equal than ${maxAllowed}.`,
+    });
+}
+
+export function createMinSchema<const TField extends string>(
+  fieldName: TField,
+  maxValue: number | null,
+  maxAllowed: number,
+) {
+  return z.object({
+    [fieldName]: createBaseNumericString(maxAllowed).refine(
+      (val) => {
+        if (val === "" || maxValue == null) return true;
+        return parseFloat(val) < maxValue;
+      },
+      { message: "Minimum value must be smaller than maximum value" },
+    ),
+  }) as z.ZodObject<{ [K in TField]: z.ZodString }>;
+}
+
+export function createMaxSchema<const TField extends string>(
+  fieldName: TField,
+  minValue: number | null,
+  maxAllowed: number,
+) {
+  return z.object({
+    [fieldName]: createBaseNumericString(maxAllowed).refine(
+      (val) => {
+        if (val === "" || minValue == null) return true;
+        return parseFloat(val) > minValue;
+      },
+      { message: "Maximum value must be bigger than minimum value" },
+    ),
+  }) as z.ZodObject<{ [K in TField]: z.ZodString }>;
+}
