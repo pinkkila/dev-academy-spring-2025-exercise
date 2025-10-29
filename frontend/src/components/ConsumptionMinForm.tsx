@@ -52,7 +52,7 @@ export default function ConsumptionMinForm({
               return (
                 <Field data-invalid={isInvalid}>
                   <FieldLabel htmlFor={field.name}>
-                    Minimum Total Consumption
+                    Minimum Total Consumption:
                   </FieldLabel>
                   <Input
                     id={field.name}

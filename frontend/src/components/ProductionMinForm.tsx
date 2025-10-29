@@ -56,7 +56,7 @@ export default function ProductionMinForm({
               return (
                 <Field data-invalid={isInvalid}>
                   <FieldLabel htmlFor={field.name}>
-                    Minimum Production
+                    Minimum Production:
                   </FieldLabel>
                   <Input
                     id={field.name}

@@ -48,7 +48,7 @@ export default function ConsumptionMaxForm({ schema, setMaxValue }: ConsumptionM
                 field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
-                  <FieldLabel htmlFor={field.name}>Maximum Total Consumption</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Maximum Total Consumption:</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
