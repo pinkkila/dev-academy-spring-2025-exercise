@@ -68,7 +68,7 @@ function createBaseNumericString(maxAllowed: number) {
     .refine((val) => val === "" || /^\d+(\.\d+)?$/.test(val), {
       message: "Only positive numbers and decimals allowed",
     })
-    .refine((val) => val === "" || parseFloat(val) <= 239656644.101, {
+    .refine((val) => val === "" || parseFloat(val) <= maxAllowed, {
       message: `Must be less or equal than ${maxAllowed}.`,
     });
 }
@@ -101,6 +101,54 @@ export function createMaxSchema<const TField extends string>(
         return parseFloat(val) > minValue;
       },
       { message: "Maximum value must be bigger than minimum value" },
+    ),
+  }) as z.ZodObject<{ [K in TField]: z.ZodString }>;
+}
+
+// export function createNumericFieldFormSchema<const TField extends string>(
+//   maxAllowed: number,
+//   minValue: number | null,
+//   maxValue: number | null,
+//   minFieldName: TField,
+//   maxFieldName: TField,
+// ) {
+//   return z.object({
+//     [minFieldName]: createBaseNumericString(maxAllowed).refine(
+//       (val) => {
+//         if (val === "" || maxValue == null) return true;
+//         return parseFloat(val) < maxValue;
+//       },
+//       { message: "Minimum value must be smaller than maximum value" },
+//     ),
+//     [maxFieldName]: createBaseNumericString(maxAllowed).refine(
+//       (val) => {
+//         if (val === "" || minValue == null) return true;
+//         return parseFloat(val) > minValue;
+//       },
+//       { message: "Maximum value must be bigger than minimum value" },
+//     ),
+//   }) as z.ZodObject<{ [K in TField]: z.ZodString }>;
+// }
+
+export function createNumericFieldFormSchema<TField extends string>(
+  fieldName: TField,
+  maxAllowed: number,
+  otherValue: number | null,
+  mode: "min" | "max",
+) {
+  return z.object({
+    [fieldName]: createBaseNumericString(maxAllowed).refine(
+      (val) => {
+        if (val === "" || otherValue == null) return true;
+        const num = parseFloat(val);
+        return mode === "min" ? num < otherValue : num > otherValue;
+      },
+      {
+        message:
+          mode === "min"
+            ? "Minimum value must be smaller than maximum value"
+            : "Maximum value must be bigger than minimum value",
+      },
     ),
   }) as z.ZodObject<{ [K in TField]: z.ZodString }>;
 }
