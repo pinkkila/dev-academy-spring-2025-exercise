@@ -1,28 +1,29 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import SingleDayDatePicker from "@/components/SingleDayDatePicker.tsx";
 import SingleDayChart from "@/components/SingleDayChart.tsx";
-import type { TSingleDayData } from "@/lib/types.ts";
-import { formatLocalDate } from "@/lib/utils.ts";
 import SingleDayStatistics from "@/components/SingleDayStatistics.tsx";
+import { useQuery } from "@tanstack/react-query";
+import { getSingleDayData } from "@/lib/queries.ts";
+import { formatLocalDate } from "@/lib/utils.ts";
 
 export default function SingleDayView() {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
-  const [singleDayData, setSingleDayData] = useState<TSingleDayData | null>(
-    null,
-  );
+  const formattedSelectedDay = selectedDay ? formatLocalDate(selectedDay) :null;
 
-  useEffect(() => {
-    const getData = async () => {
-      const response = await fetch(
-        `http://localhost:8080/api/electricity/day/${formatLocalDate(selectedDay)}`,
-      );
-      if (!response.ok)
-        throw new Error("Error in fetch: " + response.statusText);
-      const data: TSingleDayData = await response.json();
-      setSingleDayData(data);
-    };
-    if (selectedDay) getData();
-  }, [selectedDay]);
+  const { data: singleDayData, isLoading, isError } = useQuery({
+    queryKey: ["singleDay", formattedSelectedDay],
+    queryFn: () => getSingleDayData(formattedSelectedDay),
+    enabled: !!formattedSelectedDay,
+  });
+
+  if (isError) {
+    console.log("error", isError)
+  }
+
+  if (isLoading) {
+    return <p>Loading..</p>
+  }
+
 
   return (
     <>
