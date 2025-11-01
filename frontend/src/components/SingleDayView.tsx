@@ -8,21 +8,14 @@ import { formatLocalDate } from "@/lib/utils.ts";
 
 export default function SingleDayView() {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
-  const formattedSelectedDay = selectedDay ? formatLocalDate(selectedDay) :null;
+  const formattedSelectedDay = selectedDay ? formatLocalDate(selectedDay) : null;
 
-  const { data: singleDayData, isLoading, isError } = useQuery({
+  const { data: singleDayData } = useQuery({
     queryKey: ["singleDay", formattedSelectedDay],
     queryFn: () => getSingleDayData(formattedSelectedDay),
     enabled: !!formattedSelectedDay,
   });
 
-  if (isError) {
-    console.log("error", isError)
-  }
-
-  if (isLoading) {
-    return <p>Loading..</p>
-  }
 
 
   return (
@@ -47,7 +40,7 @@ export default function SingleDayView() {
 
         {singleDayData && (
           <div className="flex flex-col gap-2">
-            {singleDayData.hourlyPrices.length < 24 && (
+            { singleDayData && singleDayData.hourlyPrices.length < 24 && (
               <span className="text-muted-foreground text-sm ml-auto">
                 * data may be incomplete for this day
               </span>
