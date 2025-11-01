@@ -1,14 +1,16 @@
-import {  useState } from "react";
+import { useState } from "react";
 import SingleDayDatePicker from "@/components/SingleDayDatePicker.tsx";
 import SingleDayChart from "@/components/SingleDayChart.tsx";
 import SingleDayStatistics from "@/components/SingleDayStatistics.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { getSingleDayData } from "@/lib/queries.ts";
-import { formatLocalDate } from "@/lib/utils.ts";
+import { finnishDateFormatter, formatLocalDate } from "@/lib/utils.ts";
 
 export default function SingleDayView() {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
-  const formattedSelectedDay = selectedDay ? formatLocalDate(selectedDay) : null;
+  const formattedSelectedDay = selectedDay
+    ? formatLocalDate(selectedDay)
+    : null;
 
   const { data: singleDayData } = useQuery({
     queryKey: ["singleDay", formattedSelectedDay],
@@ -16,13 +18,11 @@ export default function SingleDayView() {
     enabled: !!formattedSelectedDay,
   });
 
-
-
   return (
     <>
       <h2 className="text-2xl font-bold">
         Single day view
-        <span> {singleDayData?.date} </span>
+        {singleDayData && <span> {finnishDateFormatter.format(new Date(singleDayData.date))}</span>}
         {singleDayData && singleDayData.hourlyPrices.length < 24 && (
           <span>*</span>
         )}
@@ -40,7 +40,7 @@ export default function SingleDayView() {
 
         {singleDayData && (
           <div className="flex flex-col gap-2">
-            { singleDayData && singleDayData.hourlyPrices.length < 24 && (
+            {singleDayData && singleDayData.hourlyPrices.length < 24 && (
               <span className="text-muted-foreground text-sm ml-auto">
                 * data may be incomplete for this day
               </span>
