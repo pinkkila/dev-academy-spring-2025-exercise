@@ -1,12 +1,12 @@
 # REST API and Dashboard exercise
 
-I came across this awesome exercise while browsing Solita's website and looking information about their Dev Academy. The application to the academy had already ended, but I made the exercise just for fun. And fun it was!
+I came across this awesome exercise while browsing Solita’s website and looking for information about their Dev Academy. The application period had already ended, but I decided to complete the exercise just for fun.
 
 ## Backend
 
-- A REST API service built with Spring Boot.
-- Implements sorting, paging, and filtering using query parameters.
-- E2E tests (in progress).
+- REST API built with Spring Boot.
+- Supports sorting, pagination, and filtering via query parameters.
+- End-to-end tests (in progress).
 
 
 ## Frontend
