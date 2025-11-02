@@ -16,10 +16,7 @@ export async function getSingleDayData(
   selectedDay: string | null,
 ): Promise<TSingleDayData> {
 
-  console.log("API fetch start:", `${API_URL}/api/electricity/day/${selectedDay}`);
-  const testResponse = await fetch(`${API_URL}/api/electricity/day/${selectedDay}`);
-
-  console.log("API response status:", testResponse.status);
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   const response = await fetch(`${API_URL}/api/electricity/day/${selectedDay}`);
   if (!response.ok) {

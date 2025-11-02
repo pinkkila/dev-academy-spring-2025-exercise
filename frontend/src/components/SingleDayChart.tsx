@@ -27,10 +27,13 @@ type Props = {
 };
 
 export default function SingleDayChart({ data }: Props) {
-
   return (
     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-      <BarChart accessibilityLayer data={data}>
+      <BarChart
+        accessibilityLayer
+        data={data}
+        margin={{ top: 32, bottom: 32 }}
+      >
         <CartesianGrid vertical={false} />
         <XAxis
           dataKey="startTime"
