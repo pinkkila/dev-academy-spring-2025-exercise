@@ -8,11 +8,11 @@ import NegativePeriodFilter from "@/components/NegativePeriodFilter.tsx";
 import ProductionFilter from "@/components/ProductionFilter.tsx";
 import SingleDayView from "@/components/SingleDayView.tsx";
 import ConsumptionFilter from "@/components/ConsumptionFilter.tsx";
+import ApiErrorBoundary from "@/components/ApiErrorBoundary.tsx";
 
 export default function App() {
   return (
     <Container className="gap-8">
-
       <div className="flex justify-end">
         <ThemeModeToggle />
       </div>
@@ -43,7 +43,9 @@ export default function App() {
       </section>
 
       <section className="flex flex-col gap-6">
-        <SingleDayView />
+        <ApiErrorBoundary>
+          <SingleDayView />
+        </ApiErrorBoundary>
       </section>
     </Container>
   );

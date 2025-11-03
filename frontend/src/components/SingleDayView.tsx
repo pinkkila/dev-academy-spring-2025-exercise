@@ -14,12 +14,16 @@ export default function SingleDayView() {
     ? formatLocalDate(selectedDay)
     : null;
 
-  const { data: singleDayData, isLoading } = useQuery({
+  const { data: singleDayData, isLoading, isError, error } = useQuery({
     queryKey: ["singleDay", formattedSelectedDay],
     queryFn: () => getSingleDayData(formattedSelectedDay),
     enabled: !!formattedSelectedDay,
     staleTime: 60000,
   });
+
+  if (isError) {
+    throw new Error(`${error}`);
+  }
 
   return (
     <>
