@@ -37,7 +37,9 @@ export default function App() {
           </div>
 
           <div className="lg:w-2/3">
-            <DailyStatisticsTable />
+            <ApiErrorBoundary>
+              <DailyStatisticsTable />
+            </ApiErrorBoundary>
           </div>
         </div>
       </section>

@@ -12,11 +12,6 @@ export type THourlyPrice = {
   hourlyPrice: number;
 };
 
-export type TDailyDataReponse = {
-  content:  TDailyData[];
-  page: TPage;
-}
-
 export type TDailyData = {
   date: string;
   totalConsumption: number;
@@ -31,5 +26,10 @@ export type TPage = {
   totalElements: number;
   totalPages: number;
 };
+
+export type TDailyDataResponse = {
+  content: TDailyData[];
+  page: TPage;
+}
 
 export type Theme = "dark" | "light" | "system";

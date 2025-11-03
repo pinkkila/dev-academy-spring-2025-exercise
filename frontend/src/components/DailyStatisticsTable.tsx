@@ -6,8 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
-import type { TDailyData, TDailyDataReponse, TPage } from "@/lib/types.ts";
+import type { TDailyData } from "@/lib/types.ts";
 import PageSelector from "@/components/PageSelector.tsx";
 import { useDSParams } from "@/lib/hooks.ts";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -15,6 +14,10 @@ import { Button } from "@/components/ui/button.tsx";
 import * as React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area.tsx";
 import { finnishDateFormatter } from "@/lib/utils.ts";
+import { useQuery } from "@tanstack/react-query";
+import { getDailyData } from "@/lib/queries.ts";
+import { Spinner } from "@/components/ui/spinner.tsx";
+import PageSelectorSkeleton from "@/components/PageSelectorSkeleton.tsx";
 
 type TColumn<T> = {
   key: keyof T;
@@ -36,7 +39,8 @@ const columns: TColumn<TDailyData>[] = [
       return "-";
     },
   },
-  { key: "totalProduction",
+  {
+    key: "totalProduction",
     label: "Total Production",
     render: (value) => {
       if (typeof value === "number") return value;
@@ -51,7 +55,8 @@ const columns: TColumn<TDailyData>[] = [
       return "-";
     },
   },
-  { key: "consecutiveNegativeHours",
+  {
+    key: "consecutiveNegativeHours",
     label: "Negative Period",
     render: (value) => {
       if (typeof value === "number") return value;
@@ -61,28 +66,25 @@ const columns: TColumn<TDailyData>[] = [
 ] as const;
 
 export default function DailyStatisticsTable() {
-  const [dailyStatistics, setDailyStatistics] = useState<TDailyData[]>([]);
-  const [page, setPage] = useState<TPage | null>(null);
   const { searchParams, sortBy, setSortBy } = useDSParams();
 
-  useEffect(() => {
-    const getData = async () => {
-      const response = await fetch(
-        `http://localhost:8080/api/electricity?${searchParams}`,
-      );
-      if (!response.ok)
-        throw new Error("Error in fetch: " + response.statusText);
-      const data: TDailyDataReponse = await response.json();
-      setDailyStatistics(data.content);
-      setPage(data.page);
-    };
-    getData();
-  }, [searchParams]);
+  const { data, isLoading, isError, error } = useQuery({
+    queryFn: () => getDailyData(searchParams),
+    queryKey: ["dailyData", searchParams],
+    staleTime: 60000,
+  });
+
+  const dailyStatistics = data?.content ?? [];
+  const page = data?.page ?? null;
 
   const handleSort = (key: keyof TDailyData) => {
     if (sortBy === `${key},asc`) setSortBy(`${key},desc`);
     else setSortBy(`${key},asc`);
   };
+
+  if (isError) {
+    throw new Error(`${error}`);
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -113,27 +115,43 @@ export default function DailyStatisticsTable() {
                 ))}
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {dailyStatistics.map((dailyData: TDailyData) => (
-                <TableRow
-                  key={dailyData.date}
-                  onClick={() => console.log(dailyData.date)}
-                >
-                  {columns.map((col) => {
-                    const value = dailyData[col.key];
-                    return (
-                      <TableCell key={col.key} className="text-center">
-                        {col.render ? col.render(value) : value}
-                      </TableCell>
-                    );
-                  })}
+            {isLoading ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={columns.length}>
+                    <div className="flex items-center justify-center h-[724.5px]">
+                      <Spinner className="size-8" />
+                    </div>
+                  </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
+              </TableBody>
+            ) : (
+              <TableBody>
+                {dailyStatistics.map((dailyData: TDailyData) => (
+                  <TableRow
+                    key={dailyData.date}
+                    onClick={() => console.log(dailyData.date)}
+                  >
+                    {columns.map((col) => {
+                      const value = dailyData[col.key];
+                      return (
+                        <TableCell key={col.key} className="text-center">
+                          {col.render ? col.render(value) : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableBody>
+            )}
           </Table>
         </ScrollArea>
       </div>
-      {page && <PageSelector page={page} />}
+      {isLoading ? (
+        <PageSelectorSkeleton />
+      ) : page ? (
+        <PageSelector page={page} />
+      ) : null}
     </div>
   );
 }
