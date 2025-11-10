@@ -6,14 +6,14 @@ I came across this awesome exercise while browsing Solita’s website and lookin
 
 - REST API built with Spring Boot.
 - Supports sorting, pagination, and filtering via query parameters.
-- End-to-end tests (in progress).
+- Includes examples of unit, JSON serialization, controller, JDBC, and integration/end-to-end tests.
 
 
 ## Frontend
 
 - Dashboard build with React.
 - Styled using shadcn/ui and Tailwind CSS.
-- Data fetching with TanStack Query providing (in progress):
+- Data fetching with TanStack Query providing:
   - Caching
   - Loading and error handling
 
