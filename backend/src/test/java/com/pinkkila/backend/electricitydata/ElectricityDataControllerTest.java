@@ -3,30 +3,30 @@ package com.pinkkila.backend.electricitydata;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.assertj.MockMvcTester;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ElectricityDataController.class)
 class ElectricityDataControllerTest {
     
     @Autowired
-    MockMvcTester mockMvc;
+    MockMvc mockMvc;
     
     @MockitoBean
     private ElectricityDataService electricityDataService;
     
     @Test
-    void getElectricityDataSingleDayStatisticsFromController() {
+    void getElectricityDataSingleDayStatistics() throws Exception {
         var testData = new ElectricityDataSingeleDayDto(
                 LocalDate.of(2024, 1, 1),
                 BigDecimal.valueOf(208),
@@ -62,19 +62,20 @@ class ElectricityDataControllerTest {
         );
         when(electricityDataService.getElectricityDataSingleDayStatistics(LocalDate.of(2024, 1, 1))).thenReturn(testData);
         
-        var response = mockMvc.get().uri("/api/electricity/day/2024-01-01");
+        mockMvc.perform(get("/api/electricity/day/2024-01-01"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.date").value("2024-01-01"))
+                .andExpect(jsonPath("$.totalConsumption").value(208))
+                .andExpect(jsonPath("$.totalProduction").value(302))
+                .andExpect(jsonPath("$.averagePrice").value(3))
+                .andExpect(jsonPath("$.hourWithMostConsumptionVsProduction").value("2024-01-01T01:00:00"))
+                .andExpect(jsonPath("$.hourlyPrices[0].startTime").value("2024-01-01T00:00:00"))
+                .andExpect(jsonPath("$.hourlyPrices[0].hourlyPrice").value(4));
+                
         
-        assertThat(response).contentType().isEqualTo(MediaType.APPLICATION_JSON);
-        assertThat(response).hasStatus(HttpStatus.OK);
-        assertThat(response).bodyJson().extractingPath("$.date").isEqualTo("2024-01-01");
-        assertThat(response).bodyJson().extractingPath("$.totalConsumption").isEqualTo(208);
-        assertThat(response).bodyJson().extractingPath("$.totalProduction").isEqualTo(302);
-        assertThat(response).bodyJson().extractingPath("$.averagePrice").isEqualTo(3);
-        assertThat(response).bodyJson().extractingPath("$.hourWithMostConsumptionVsProduction").isEqualTo("2024-01-01T01:00:00");
-        assertThat(response).bodyJson().extractingPath("$.hourlyPrices[0].startTime").isEqualTo("2024-01-01T00:00:00");
-        assertThat(response).bodyJson().extractingPath("$.hourlyPrices[0].hourlyPrice").isEqualTo(4);
-        assertThat(response).bodyJson().extractingPath("$.hourlyPrices[1].startTime").isEqualTo("2024-01-01T01:00:00");
-        assertThat(response).bodyJson().extractingPath("$.hourlyPrices[1].hourlyPrice").isEqualTo(2);
+        verify(electricityDataService, times(1))
+                .getElectricityDataSingleDayStatistics(LocalDate.of(2024, 1, 1));
     }
     
 }

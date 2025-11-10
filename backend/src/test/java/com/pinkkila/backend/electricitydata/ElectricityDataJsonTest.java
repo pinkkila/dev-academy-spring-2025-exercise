@@ -19,7 +19,7 @@ public class ElectricityDataJsonTest {
     private JacksonTester<ElectricityDataSingeleDayDto> json;
     
     @Test
-    void testSerialization() throws Exception {
+    void tesElectricityDataSingeleDayDtoSerialization() throws Exception {
         var testDto = new ElectricityDataSingeleDayDto(
                 LocalDate.of(2024, 1, 1),
                 BigDecimal.valueOf(8),

@@ -24,7 +24,7 @@ class ElectricityDataServiceTest {
     private ElectricityDataService electricityDataService;
     
     @Test
-    void getElectricityDataSingleDayStatisticsFromService() {
+    void getElectricityDataSingleDayStatistics() {
         var testData = List.of(
                 new ElectricityData(1L, LocalDate.of(2024, 1, 1), LocalDateTime.of(2024, 1, 1, 0, 0, 0), BigDecimal.valueOf(10), BigDecimal.valueOf(8), BigDecimal.valueOf(8.24)),
                 new ElectricityData(2L, LocalDate.of(2024, 1, 1), LocalDateTime.of(2024, 1, 1, 1, 0, 0), BigDecimal.valueOf(8), BigDecimal.valueOf(5), BigDecimal.valueOf(5.99)),
