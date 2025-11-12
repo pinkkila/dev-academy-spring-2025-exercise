@@ -11,6 +11,8 @@ CREATE TABLE if not exists electricity_data
     hourly_price       NUMERIC(6, 3)
 );
 
+CREATE INDEX idx_electricity_data_date ON electricity_data (date);
+
 CREATE OR REPLACE VIEW electricity_data_daily AS
 WITH add_indicator AS (SELECT *, CASE WHEN hourly_price < 0 THEN 0 ELSE 1 END AS negative_price_indicator
                        FROM electricity_data),
