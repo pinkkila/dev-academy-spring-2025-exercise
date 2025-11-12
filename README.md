@@ -35,14 +35,16 @@ docker compose -f compose.backend.yaml up --build
 ```
 
 This command builds the backend image (if needed) and starts the container.
-Once running, the REST API will be available at http://localhost:8080/api/electricity.
+Once running, the REST API will be available at `http://localhost:8080/api/electricity.
 
 #### Available endpoints
 
 1. `GET /api/electricity`
-Fetches daily statistics electricity data with support for filtering, pagination, and sorting.
+
+Fetches daily electricity statistics with support for filtering, pagination, and sorting.
 
 2. `GET /api/electricity/day/{date}`
+
 Fetches data for a specific date.
 
 ##### Query Parameters
@@ -60,7 +62,9 @@ Fetches data for a specific date.
 
 ##### Example Request
 
+```
 http://localhost:8080/api/electricity?startDate=2021-05-15&minConsecutiveNegativeHours=4&page=0&size=20&sort=consecutiveNegativeHours,asc
+```
 
 
 ### Frontend (React + Vite)
