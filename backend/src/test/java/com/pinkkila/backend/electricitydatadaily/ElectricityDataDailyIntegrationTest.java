@@ -70,4 +70,14 @@ public class ElectricityDataDailyIntegrationTest {
         assertThat(json.read("$.content[0].averagePrice", BigDecimal.class)).isNull();
     }
     
+    @Test
+    void invalidQueryParamsReturnsBadRequest() {
+        ResponseEntity<String> response = this.restTemplate.getForEntity("/api/electricity?startDate=2023-12-03&endDate=2023-12-01", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        
+        DocumentContext json = JsonPath.parse(response.getBody());
+        
+        assertThat(json.read("$.message", String.class)).isEqualTo("startDate must be <= endDate");
+    }
+    
 }
