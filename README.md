@@ -18,6 +18,64 @@ I came across this awesome exercise while browsing Solita’s website and lookin
   - Loading and error handling
 
 
+## How to run
+
+Before running the project, make sure you have the following installed:
+- Docker — for running the backend service in a container. 
+- Java 21 — required if you prefer to run the backend locally instead of using Docker.
+- Node.js and npm — for building and running the frontend.
+
+### Backend (Spring Boot)
+
+- Ensure Docker is installed and running on your machine.
+- From the project root, start the backend service with the following command:
+
+```
+docker compose -f compose.backend.yaml up --build
+```
+
+This command builds the backend image (if needed) and starts the container.
+Once running, the REST API will be available at http://localhost:8080/api/electricity.
+
+#### Available endpoints
+
+1. `GET /api/electricity`
+Fetches daily statistics electricity data with support for filtering, pagination, and sorting.
+
+2. `GET /api/electricity/day/{date}`
+Fetches data for a specific date.
+
+##### Query Parameters
+
+| Category                   | Parameters                                                                       |
+|:---------------------------|:---------------------------------------------------------------------------------|
+| Date range                 | startDate, endDate                                                               |
+| Total Consumption          | minTotalConsumption, maxTotalConsumption                                         |
+| Total Production           | minTotalProduction, maxTotalProduction                                           |
+| Average Price              | minAveragePrice, maxAveragePrice                                                 |
+| Consecutive Negative Hours | minConsecutiveNegativeHours, maxConsecutiveNegativeHours                         |
+| Pagination                 | page, size (default size = 20)                                                   |
+| Sorting                    | date, consecutiveNegativeHours, totalConsumption, totalProduction, averagePrice  |
+
+
+##### Example Request
+
+http://localhost:8080/api/electricity?startDate=2021-05-15&minConsecutiveNegativeHours=4&page=0&size=20&sort=consecutiveNegativeHours,asc
+
+
+### Frontend (React + Vite)
+
+- Navigate to the frontend directory and start the Vite development server:
+
+```
+cd frontend
+npm install
+npm run dev
+```
+
+Vite will start the development server at http://localhost:5173￼ by default.
+If that port is already in use, it will automatically select the next available one (check the terminal output for details).
+
 ## UI images
 
 ![img.png](readme-imgs/daily-statistics-list.png)
