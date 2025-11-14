@@ -1,6 +1,6 @@
 # REST API and Dashboard exercise
 
-I came across this awesome exercise while browsing Solita’s website and looking for information about their Dev Academy. The application period had already ended, but I decided to complete the exercise just for fun.
+I came across this awesome [exercise](https://github.com/solita/dev-academy-spring-2025-exercise) while browsing Solita’s website and looking for information about their Dev Academy. The application period had already ended, but I decided to complete the exercise just for fun.
 
 ## Backend
 
@@ -77,8 +77,7 @@ npm install
 npm run dev
 ```
 
-Vite will start the development server at http://localhost:5173￼ by default.
-If that port is already in use, it will automatically select the next available one (check the terminal output for details).
+Vite will start the development server at http://localhost:5173.
 
 ## UI images
 

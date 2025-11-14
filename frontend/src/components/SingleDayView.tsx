@@ -54,7 +54,6 @@ export default function SingleDayView() {
           )}
         </div>
 
-        {/* Chart height with margins + span =  713px */}
         <div className="flex flex-col min-h-[713px]">
           {singleDayData && (
             <>

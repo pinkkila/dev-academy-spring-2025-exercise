@@ -21,7 +21,6 @@ export default function DateFilter() {
 
   return (
     <div>
-      {/*<h2>Date</h2>*/}
       <div className="flex gap-2">
         <div className="flex flex-col gap-3">
           <Label htmlFor="date" className="px-1">
