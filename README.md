@@ -35,7 +35,7 @@ docker compose -f compose.backend.yaml up --build
 ```
 
 This command builds the backend image (if needed) and starts the container.
-Once running, the REST API will be available at `localhost:8080/api/electricity`.
+Once running, the REST API will be available at http://localhost:8080/api/electricity.
 
 #### Available endpoints
 
