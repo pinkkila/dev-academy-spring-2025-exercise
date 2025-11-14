@@ -35,7 +35,7 @@ docker compose -f compose.backend.yaml up --build
 ```
 
 This command builds the backend image (if needed) and starts the container.
-Once running, the REST API will be available at http://localhost:8080/api/electricity.
+Once running, the REST API will be available at `localhost:8080/api/electricity`.
 
 #### Available endpoints
 
@@ -77,7 +77,7 @@ npm install
 npm run dev
 ```
 
-Vite will start the development server at http://localhost:5173.
+Vite will start the development server at `localhost:5173`.
 
 ## UI images
 
