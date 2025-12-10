@@ -2,6 +2,8 @@
 
 I came across this awesome [exercise](https://github.com/solita/dev-academy-spring-2025-exercise) while browsing Solita’s website and looking for information about their Dev Academy. The application period had already ended, but I decided to complete the exercise just for fun.
 
+The application is currently deployed at https://dev.pinkkila.com (best viewed on desktop).
+
 ## Backend
 
 - REST API built with Spring Boot.
