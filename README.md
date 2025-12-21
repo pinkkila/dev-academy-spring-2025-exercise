@@ -8,7 +8,7 @@ The app is currently deployed at https://dev.pinkkila.com (best viewed on deskto
 
 - REST API built with Spring Boot.
 - Supports sorting, pagination, and filtering via query parameters.
-- Includes examples of unit, JSON serialization, controller, JDBC, and integration/end-to-end tests.
+- Includes unit, JSON serialization, controller, JDBC, and integration tests.
 
 
 ## Frontend
