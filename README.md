@@ -8,7 +8,12 @@ The app is currently deployed at https://dev.pinkkila.com (best viewed on deskto
 
 - REST API built with Spring Boot.
 - Supports sorting, pagination, and filtering via query parameters.
-- Includes unit, JSON serialization, controller, JDBC, and integration tests.
+- Testing:
+  - Unit Tests: Logic-heavy components such as ElectricityDataService and ElectricityDataDailyQueryBuilder are tested in isolation to verify business rules and dynamic query generation.
+  - Web Slice Tests (@WebMvcTest): REST controllers are tested with MockMvc to validate API contracts, HTTP status codes, and JSON response structures without loading the full application context.
+  - Data Slice Tests (@JdbcTest): Repository layers are tested against a real PostgreSQL database using Testcontainers to validate custom SQL queries and result mapping.
+  - JSON Serialization Tests (@JsonTest): DTO serialization is verified to ensure compliance with the API specification.
+  - Full Integration Tests (@SpringBootTest): Complete backend request flows are validated by using the full Spring application context and executing real HTTP requests via TestRestTemplate against a PostgreSQL database running in Testcontainers.
 
 
 ## Frontend
