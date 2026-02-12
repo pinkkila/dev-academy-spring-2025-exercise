@@ -1,8 +1,6 @@
 # REST API and Dashboard exercise
 
-I came across this awesome [exercise](https://github.com/solita/dev-academy-spring-2025-exercise) while browsing Solita’s website and looking for information about their Dev Academy. The application period had already ended, but I decided to complete the exercise just for fun.
-
-The app is currently deployed at https://dev.pinkkila.com (best viewed on desktop).
+The app is currently deployed at https://dev.pinkkila.com (made only for desktop).
 
 ## Backend
 
@@ -95,3 +93,10 @@ Vite will start the development server at `localhost:5173`.
 ![img_2.png](readme-imgs/single-day-view.png)
 
 ![img.png](readme-imgs/hourly-prices.png)
+
+## Reference
+
+This project is based on the Dev Academy Spring 2025 backend exercise published by Solita:  
+https://github.com/solita/dev-academy-spring-2025-exercise
+
+The solution, architecture, and implementation decisions in this repository are entirely my own.
